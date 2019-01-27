@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="400" height="auto" src="TauCon_Thumbnail.png">
+  <img width="400" height="auto" src="Assets/Logos/TauCon_Thumbnail.png">
 </p>
 
 # Very...*very* WIP
