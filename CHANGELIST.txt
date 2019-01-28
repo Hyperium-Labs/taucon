@@ -8,24 +8,44 @@
 ------------------
 
 ------------------
-// 26-01-2019
-## v0.1.1
+// 28-01-2019
+// v0.1.2
 
-### Changes
+// Changes
+- Drop support for console window dragging (see notes)
+- Drop support for console resizing (see notes)
+
+// Fix
+- Fix regression: OutputContent no longer resizes based on text output
+
+// Change Notes
+I dropped support for console dragging and resizing. The reason is threefold:
+	1. I was never initially going to support this (scope creep).
+	2. There is no obvious way (to me) to implement further improvements (like locking the mouse position if min/max drag area/resize has been reached) without using some hacky work-around.
+	3. It's "good enough". Resize and drag *work*, they just don't feel polished.
+I may or may not remove dragging and resizing altogether in a later version.
+------------------
+
+------------------
+// 26-01-2019
+// v0.1.1
+
+// Changes
 - Add back to GitHub
 - Add dragging of console
----
-### Fix
+
+// Fix
 - Fix OutputContent panel moving on output when the console was dragged other than its starting position in the top left corner
----
-### Regressions
+
+// Regressions
 - OutputContent no longer resizes based on text output
+------------------
 
 ------------------
 // 17-01-2019
-## v0.1.0
+// v0.1.0
 
-### Changes
+// Changes
 - Add toggle visibility of console
 - Add user input and parsing
 - Add default commands: clear, help, quit, volume
@@ -33,9 +53,8 @@
 - Add two icons for future functionality:
     - Resize arrow
     - Reset window position
----
-### Fix
 
+// Fix
 - Fix scrollbar not pushing to bottom on text output
 - Fix content rect not refreshing to show text output
 - Fix content rect not resizing on text output
