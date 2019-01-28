@@ -19,13 +19,8 @@ namespace TauConsole
 
         private string TheMethodItCalls(string param)
         {
-            // Method code here
-            // if method errors:
-            // return [error text]
-            // else
-            // do whatever the method is made for &&
-            // return either no text (null) ||
-            // return text that indicates the cmd completed successfully
+            
+
             return null;
         }
     }

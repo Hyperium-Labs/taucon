@@ -34,8 +34,8 @@ namespace TauConsole
         public RectTransform scrollbarHandle;
 
         [Header("Console Options")]
-        public char commandSymbol = '>';
-        public int maxOutputLength = 5000;
+        public char promptSymbol = '>';
+        public int maxLines = 5000;
         public bool clearOnSubmit = true;
         public bool reselectOnSubmit = false;
         public bool outputUnityLog = false;
@@ -43,10 +43,10 @@ namespace TauConsole
         public bool allowEmptyOutput = false;
         public bool newlineOnOutput = true;
         public bool caretCustomColor = true;
-        public int characterLimit = 60;
+        public int inputCharacterLimit = 60;
         public float caretBlinkRate = 1.5f;
         public int caretWidth = 10;
-        public string consoleVersionText = "TauCon//";
+        public string consoleVersionText = "TauCon";
 
         [Header("Fonts")]
         public Font versionFont;
@@ -60,7 +60,7 @@ namespace TauConsole
         public int inputFontSize;
         public int placeholderFontSize;
 
-        [Header("GUI Colors")]
+        [Header("Default GUI Colors")]
         public Color32 versionPanelBackgroundRGBA = new Color32(46, 46, 46, 255);
         public Color32 versionTextRGBA = new Color32(131, 212, 179, 255);
         public Color32 outputPanelBackgroundRGBA = new Color32(58, 58, 58, 255);
@@ -194,22 +194,11 @@ namespace TauConsole
             {
                 FetchHistory(KeyCode.DownArrow);
             }
-
-            // FIXME: Fix to NOT allow scrolling the outputContent with click+drag
-            // Prevent any mouse/touch scroll/drag interaction
-            // scrollRect.OnBeginDrag(null);
-            // scrollRect.OnDrag(null);
-            // scrollRect.OnEndDrag(null);
-            // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
-            // 	if (EventSystem.current.currentSelectedGameObject.name == "LogView") {
-            // 		return;
-            // 	}
-            // }
         }
 
         #endregion
 
-        #region Logging
+        #region Warn Logging
 
         private static string LOGERROR;
         private static string LOGWARNING;
@@ -312,7 +301,7 @@ namespace TauConsole
             string output = string.Empty;
 
             //// Print command
-            //Print(Instance.commandSymbol + " " + Colorify(command, commandColor));
+            Print(Instance.promptSymbol + " " + Colorify(command, commandColor));
 
             if (string.IsNullOrEmpty(command))
             {
@@ -348,7 +337,7 @@ namespace TauConsole
             // The reason I have decided to add this check *after* the History logic
             // is so that the History acts exactly like bash. Even if the past command
             // or argument is invalid it will add it regardless. 
-            // This is a personal preference thing which I may modify in the future.
+            // This is a personal preference thing.
 
             // If the command is not found in the Commands Dictionary
             if (!Commands.ContainsKey(rawCmd))
@@ -464,19 +453,6 @@ namespace TauConsole
 
         #endregion
 
-        #region Configuration File & Parsing
-
-        // TODO(Trevor Woodman): Write this parse config method at a later date
-        /// <summary>
-        /// Parse the console.cfg file 
-        /// </summary>
-        public static void ParseConfig()
-        {
-            // code HEYAAAAA!!!
-        }
-
-        #endregion
-
         #region Printing & Output
 
         /// <summary>
@@ -497,23 +473,38 @@ namespace TauConsole
         /// <param name="line">The line to append to the output log.</param>
         private void OnOutput(string line)
         {
-            if (LogHistory.Count > maxOutputLength)
+            if (Instance.newlineOnOutput)
             {
-                //ArraySegment<string> seg = new ArraySegment<string>();
-                ////outputLogText.text = outputLogText.text.Substring((outputLogText.text.Length - maxOutputLength), maxOutputLength);
-                //LogHistory.RemoveAt(LogHistory.Count - 1);
-                //outputLogText.text = string.Join("\n", LogHistory.ToArray());
+                line += "\n";
             }
 
-            // TODO(Trevor Woodman): REMOVE Debug
             // Push log to LogHistory
             LogHistory.Insert(0, line);
+
+            if (LogHistory.Count >= maxLines)
+            {
+                // Remove the last logged item in the list
+                LogHistory.RemoveAt(LogHistory.Count - 1);
+
+                // clear output log
+                outputLogText.text = null;
+
+                for (int i = LogHistory.Count-1; i > 0; i--)
+                {
+                    outputLogText.text += LogHistory[i];
+
+                }
+            }
+
             Debug.Log(string.Join(", ", LogHistory.ToArray()));
 
-            outputLogText.text += '\n' + line;
+            outputLogText.text += line;
             RebuildOutputUI(outputContent, outputViewport, scrollbar, inputField);
         }
 
+        /// <summary>
+        /// Called when text has been submitted from the input field.
+        /// </summary>
         private void OnInput()
         {
             // Get the value of the input field
@@ -523,11 +514,6 @@ namespace TauConsole
             {
                 return;
             }
-
-            // TODO(Trevor Woodman): REMOVE Debug
-            // Push log to LogHistory
-            LogHistory.Insert(0, command);
-            Debug.Log(string.Join(", ", LogHistory.ToArray()));
 
             // Otherwise continue...
             // Send command to console & eval
@@ -598,6 +584,8 @@ namespace TauConsole
 
             AddCommand("Volume", "volume", "Set volume value to a float ranging from 0 to 1.",
                 CommandVolume.ChangeVolume, "[arg1] | float (0-1) | Set volume value.");
+
+            AddCommand("Exit", "exit", "Close the console.", CommandExit.ExitConsole, "noargs");
         }
 
         #endregion
@@ -640,7 +628,7 @@ namespace TauConsole
         private void InitConsoleOptions()
         {
 
-            inputField.characterLimit = characterLimit;
+            inputField.characterLimit = inputCharacterLimit;
             initialInputSelectionColor = inputField.selectionColor;
             initialCaretColor = inputField.caretColor;
             // Set the version text (the text at the top of the console)

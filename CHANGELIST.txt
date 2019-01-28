@@ -9,6 +9,27 @@
 
 ------------------
 // 28-01-2019
+// v0.2.6
+
+// Changes
+- Rewrite output functionality
+- Add user command output just before command return
+- Add console option: change prompt symbol
+- Add "exit" command, closes console
+- Add exit button functionality, also closes console
+- Remove parsing region and plans for config parsing (for now)
+
+// Fix
+- Fix MaxLines not removing items in the end of the list when max reached
+- Fix volume command: no longer able to set value other than 0.0 to 1.0
+
+// Change Notes
+- I attempted to fix the ResetPositionButton functionality but I ran out of hours before this push.
+- v2.6, 1 major addition (output), 6 minor (4 adds, 2 fixes), figured I should start versioning these based on real numbers.
+------------------
+
+------------------
+// 28-01-2019
 // v0.1.2
 
 // Changes

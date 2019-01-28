@@ -25,17 +25,24 @@ namespace TauConsole
         /// <returns>string AudioListener.volume</returns>
         public static string ChangeVolume(string param)
         {
+            float newVolume;
+
+            // if no argument, output the current setting
             if (string.IsNullOrEmpty(param))
             {
                 return "Volume: " + AudioListener.volume;
             }
-
-            float newVolume;
-            if (float.TryParse(param, out newVolume))
+            
+            // check if argument is valid
+            if (float.Parse(param) >= 0.0f && float.Parse(param) <= 1.0)
             {
-                AudioListener.volume = newVolume;
-                return "Volume: " + newVolume;
+                if (float.TryParse(param, out newVolume))
+                {
+                    AudioListener.volume = newVolume;
+                    return "Volume: " + newVolume;
+                }
             }
+
             return TauCon.Colorify("Error: ", TauCon.errorColor) + "Failed to set volume, check the syntax.";
         }
     }
