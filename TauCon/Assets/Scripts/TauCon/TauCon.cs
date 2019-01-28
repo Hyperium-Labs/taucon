@@ -449,12 +449,10 @@ namespace TauConsole
         {
             // Rebuild content RT
             content.GetComponent<RectTransform>().anchoredPosition = parent.position;
-            content.GetComponent<RectTransform>().sizeDelta = new Vector2(content.rect.width, outputContentHeight = outputLogText.preferredHeight);
             content.anchorMin = new Vector2(0f, 0f);
             content.anchorMax = new Vector2(1f, 1f);
             content.offsetMin = outputContentReset;
             content.offsetMax = outputContentReset;
-            //content.position = outputContentReset;
             content.transform.SetParent(parent);
 
             // Rebuild scrollbar

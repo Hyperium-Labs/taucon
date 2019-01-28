@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace Zuratek.ZGUI
+namespace Common.TGUI
 {
     public class ResizePanel : MonoBehaviour, IPointerDownHandler, IDragHandler
     {

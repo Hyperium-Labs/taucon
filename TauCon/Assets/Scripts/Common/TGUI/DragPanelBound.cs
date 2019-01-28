@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Zuratek.ZGUI
+namespace Common.TGUI
 {
     public class DragPanelBound : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
@@ -41,12 +41,14 @@ namespace Zuratek.ZGUI
             {
                 return;
             }
+
             Vector2 localPointerPosition;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
                 _panelRectTransform.localPosition = localPointerPosition - _pointerOffset;
                 ClampToWindow();
                 Vector2 clampedPosition = _panelRectTransform.localPosition;
+
                 if (_clampedToRight)
                 {
                     clampedPosition.x = (_canvasRectTransform.rect.width * 0.5f) - (_panelRectTransform.rect.width * (1 - _panelRectTransform.pivot.x));
@@ -64,6 +66,7 @@ namespace Zuratek.ZGUI
                 {
                     clampedPosition.y = (-_canvasRectTransform.rect.height * 0.5f) + (_panelRectTransform.rect.height * _panelRectTransform.pivot.y);
                 }
+
                 _panelRectTransform.localPosition = clampedPosition;
             }
         }
@@ -75,6 +78,7 @@ namespace Zuratek.ZGUI
             _canvasRectTransform.GetWorldCorners(canvasCorners);
             _panelRectTransform.GetWorldCorners(panelRectCorners);
 
+            // if console touching right window border
             if (panelRectCorners[2].x > canvasCorners[2].x)
             {
                 if (!_clampedToRight)
@@ -86,6 +90,7 @@ namespace Zuratek.ZGUI
             {
                 _clampedToRight = false;
             }
+            // if console touching left window border
             else if (panelRectCorners[0].x < canvasCorners[0].x)
             {
                 if (!_clampedToLeft)
@@ -97,7 +102,7 @@ namespace Zuratek.ZGUI
             {
                 _clampedToLeft = false;
             }
-
+            // if console touching top window border
             if (panelRectCorners[2].y > canvasCorners[2].y)
             {
                 if (!_clampedToTop)
@@ -109,6 +114,7 @@ namespace Zuratek.ZGUI
             {
                 _clampedToTop = false;
             }
+            // if console touching bottom window border
             else if (panelRectCorners[0].y < canvasCorners[0].y)
             {
                 if (!_clampedToBottom)
