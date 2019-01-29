@@ -26,8 +26,8 @@ namespace TauConsole
         /// </summary>
         private void Start()
         {
-            inputField = TauCon.Instance.inputField;
-            tauCon = TauCon.Instance.tauConCanvas.gameObject;
+            inputField = TauCon.Instance.InputField;
+            tauCon = TauCon.Instance.TauConCanvas.gameObject;
             tauCon.SetActive(false);
         }
 
@@ -53,7 +53,7 @@ namespace TauConsole
                     }
                 }
 
-                if (!TauCon.Instance.reselectOnSubmit)
+                if (!TauCon.Instance.ReselectOnSubmit)
                 {
                     StartCoroutine(TauCon.CaretToEnd(inputField));
                 }

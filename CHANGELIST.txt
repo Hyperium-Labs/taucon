@@ -6,6 +6,24 @@
 ------------------
 // CHANGELIST dd/mm/yyyy
 ------------------
+------------------
+// 28-01-2019
+// v1.0.0 🚀
+
+// Changes
+- Add predefined primary themes
+- Add predefined secondary themes
+- Add unitypackage to project
+- Add prefab to project
+- Add default color for resize arrow icon
+- Add default color for close button
+- Add default color for reset position button
+- Add toggleable QOL feature where if the console is active and the user presses TAB it will activate the inputfield (TRUE by default)
+
+// Change Notes
+- Cleaned up my abhorrent variable naming, public variables are now pascal cased and private start with underscore.
+- Just gonna go ahead and skip ahead to v1. I have cleaning, commenting, and docs to do, but as it stands I have finished everything I originally set out to do with this console. I may improve upon it in the future.
+------------------
 
 ------------------
 // 28-01-2019
@@ -99,4 +117,9 @@ I may or may not remove dragging and resizing altogether in a later version.
 - Fix scrollbar not pushing to bottom on text output
 - Fix content rect not refreshing to show text output
 - Fix content rect not resizing on text output
+------------------
+
+------------------
+// Sometime in late 2018...
+// v0.0.0 - v0.1.0
 ------------------

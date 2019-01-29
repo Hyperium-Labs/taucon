@@ -18,7 +18,7 @@ namespace TauConsole
 
         public static string ClearLog(string param)
         {
-            TauCon.Instance.outputLogText.text = "";
+            TauCon.Instance.OutputLogText.text = "";
             return null;
         }
     }

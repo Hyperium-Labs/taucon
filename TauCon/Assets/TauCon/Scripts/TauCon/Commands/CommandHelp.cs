@@ -30,15 +30,15 @@ namespace TauConsole
             if (string.IsNullOrEmpty(param))
             {
                 return "Type " 
-                    + TauCon.Colorify("help list [-d]", TauCon.paramColor) 
+                    + TauCon.Colorify("help list [-d]", TauCon.ParamColor) 
                     + " for a list of commands, or " 
-                    + TauCon.Colorify("help {command}", TauCon.paramColor) 
+                    + TauCon.Colorify("help {command}", TauCon.ParamColor) 
                     + " for a description of a certain command.\narg1 | -d | Show list of commands with description.";
             }
 
             if (param == "me")
             {
-                return TauCon.Colorify("No.", TauCon.exceptionColor);
+                return TauCon.Colorify("No.", TauCon.ExceptionColor);
             }
 
             if (param == "list -d" || param == "list [-d]")
@@ -52,19 +52,19 @@ namespace TauConsole
             else if (TauCon.Commands.ContainsKey(param))
             {
                 TauConCommand command = TauCon.Commands[param];
-                return TauCon.Colorify(param, TauCon.paramColor) + " "
-                    + (command.helpText == null ? string.Empty : (TauCon.Colorify(command.helpText, TauCon.helpColor)));
+                return TauCon.Colorify(param, TauCon.ParamColor) + " "
+                    + (command.helpText == null ? string.Empty : (TauCon.Colorify(command.helpText, TauCon.HelpColor)));
             }
             else if (!TauCon.Commands.ContainsKey(param))
             {
                 return "Command { " 
-                    + TauCon.Colorify(param, TauCon.paramColor) 
+                    + TauCon.Colorify(param, TauCon.ParamColor) 
                     + " } does not exist.";
             }
             else
             {
                 return "Command { " 
-                    + TauCon.Colorify(param, TauCon.paramColor) 
+                    + TauCon.Colorify(param, TauCon.ParamColor) 
                     + " } does not have help text.";
             }
         }
@@ -78,7 +78,7 @@ namespace TauConsole
         {
             if (!showDescription)
             {
-                return TauCon.Colorify(string.Join("\n", TauCon.Commands.Keys.ToArray()), TauCon.helpColor);
+                return TauCon.Colorify(string.Join("\n", TauCon.Commands.Keys.ToArray()), TauCon.HelpColor);
             }
             else
             {
@@ -87,9 +87,9 @@ namespace TauConsole
                 // TODO(Trevor Woodman): Rewrite this foreach loop as a for loop (faster)
                 foreach (string command in TauCon.Commands.Keys)
                 {
-                    result += TauCon.Colorify(command, TauCon.helpColor) 
+                    result += TauCon.Colorify(command, TauCon.HelpColor) 
                         + " \t" 
-                        + TauCon.Colorify(TauCon.Commands[command].description, TauCon.helpListColor) 
+                        + TauCon.Colorify(TauCon.Commands[command].description, TauCon.HelpListColor) 
                         + "\n";
                 }
                 return result;

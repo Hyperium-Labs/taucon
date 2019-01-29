@@ -43,7 +43,7 @@ namespace TauConsole
                 }
             }
 
-            return TauCon.Colorify("Error: ", TauCon.errorColor) + "Failed to set volume, check the syntax.";
+            return TauCon.Colorify("Error: ", TauCon.ErrorColor) + "Failed to set volume, check the syntax.";
         }
     }
 }
