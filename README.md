@@ -2,6 +2,10 @@
   <img width="auto" height="auto" src="Assets/Logos/TauCon_Thumbnail.png">
 </p>
 
+<p align="center">
+  <img width="auto" height="auto" src="Assets/Logos/TauCon_Icon.png">
+</p>
+
 ## Features:
 
 - Input & parsing
