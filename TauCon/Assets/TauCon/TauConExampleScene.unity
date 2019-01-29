@@ -490,6 +490,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7813404898108498864, guid: 9b1855d01a9d85641a478ef554f7a7ce,
+        type: 3}
+      propertyPath: PredefinedPrimaryColorTheme
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7813404898161934334, guid: 9b1855d01a9d85641a478ef554f7a7ce,
         type: 3}
       propertyPath: m_SizeDelta.y

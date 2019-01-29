@@ -1,5 +1,9 @@
 <p align="center">
-  <img width="400" height="auto" src="Assets/Logos/TauCon_Thumbnail.png">
+  <img width="auto" height="auto" src="Assets/Logos/TauCon_Thumbnail.png">
+</p>
+
+<p align="center">
+  <img width="auto" height="auto" src="Assets/Other/tc_colours.gif">
 </p>
 
 ## Features:
