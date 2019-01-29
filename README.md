@@ -58,3 +58,8 @@
 3. Modify the code within. I've added comments that clearly state how to add a command, and looking at the AddCommand function in `TauCon.cs` should give more indication of what is required to register a command
 4. As far as code goes, it's going to be unique to every project, which is why I included only the most basic of commands
 5. Have fun! If you find a bug or have a cleaner way of doing something hit me up or submit a PR (Please keep in mind this was my first major completed project with C#/Unity, be nice 😅)
+
+---
+
+*I stole(borrowed) the colours (not the dark/light) for the predefined themes from [@stinja](https://github.com/stinja)*
+
