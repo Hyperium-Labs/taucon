@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace Common.TGUI
+namespace Common
 {
     public class ResizePanel : MonoBehaviour, IPointerDownHandler, IDragHandler
     {

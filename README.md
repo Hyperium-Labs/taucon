@@ -8,6 +8,8 @@
 - C o l o u r e d logging
 - Command history and bash-like history navigation (up-down arrow keys)
 - Dragging & resizing of console
+- Custom fonts
+- Custom font sizes
 - Default commands:
   - help
   - clear
@@ -31,8 +33,6 @@
 
 ## Planned:
 
-- Custom fonts
-- Custom font sizes
 - A set of default themes that are easily interchangeable for the developer to use
 - Comments, comments everywhere
 - Docs in the comments

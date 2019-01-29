@@ -34,6 +34,7 @@ namespace TauConsole
         public RectTransform scrollbarHandle;
 
         [Header("Console Options")]
+
         public char promptSymbol = '>';
         public int maxLines = 5000;
         public bool clearOnSubmit = true;
@@ -43,22 +44,24 @@ namespace TauConsole
         public bool allowEmptyOutput = false;
         public bool newlineOnOutput = true;
         public bool caretCustomColor = true;
+        public bool customFonts = false;
+        public bool customFontSizes = false;
         public int inputCharacterLimit = 60;
         public float caretBlinkRate = 1.5f;
         public int caretWidth = 10;
         public string consoleVersionText = "TauCon";
 
         [Header("Fonts")]
-        public Font versionFont;
-        public Font outputFont;
-        public Font inputFont;
-        public Font placeholderFont;
+        public Font versionTextFont;
+        public Font outputLogTextFont;
+        public Font inputTextFont;
+        public Font inputPlaceholderTextFont;
 
         [Header("Font Sizes")]
-        public int versionFontSize;
-        public int outputFontSize;
-        public int inputFontSize;
-        public int placeholderFontSize;
+        public int versionTextFontSize = 14;
+        public int outputLogTextFontSize = 14;
+        public int inputTextFontSize = 14;
+        public int inputPlaceholderTextFontSize = 14;
 
         [Header("Default GUI Colors")]
         public Color32 versionPanelBackgroundRGBA = new Color32(46, 46, 46, 255);
@@ -99,9 +102,9 @@ namespace TauConsole
         private static Color32 initialInputSelectionColor;
         private static Color32 initialCaretColor;
         private static int currentIndex;
-        #pragma warning disable
+#pragma warning disable
         private float outputContentHeight;
-        #pragma warning enable
+#pragma warning enable
 
         private Vector2 outputContentReset = new Vector2(0f, 0f);
 
@@ -151,6 +154,8 @@ namespace TauConsole
             // Init current index for History
             currentIndex = -1;
 
+            InitCustomFonts();
+            InitFontSizes();
             InitConsoleGUI();
             InitConsoleOptions();
             InitLogColors();
@@ -178,10 +183,8 @@ namespace TauConsole
                     if (inputText.text != "")
                     {
                         // Clear the console input field
-                        inputText = null;
+                        inputText.text = null;
                     }
-                    // And focus the console input field again
-                    inputField.ActivateInputField();
                 }
             }
 
@@ -489,7 +492,7 @@ namespace TauConsole
                 // clear output log
                 outputLogText.text = null;
 
-                for (int i = LogHistory.Count-1; i > 0; i--)
+                for (int i = LogHistory.Count - 1; i > 0; i--)
                 {
                     outputLogText.text += LogHistory[i];
 
@@ -528,8 +531,8 @@ namespace TauConsole
             // If reselectOnSubmit is enabled
             if (reselectOnSubmit)
             {
-                // Start a coroutine to place the cursor at the end of the text in the input
-                StartCoroutine(CaretToEnd(inputField));
+                inputField.Select();
+                inputField.ActivateInputField();
             }
             // And then rebuild the UI elements that need to be rebuilt to show changes
             RebuildOutputUI(outputContent, outputViewport, scrollbar, inputField);
@@ -582,8 +585,8 @@ namespace TauConsole
 
             AddCommand("Clear", "clear", "Clears the output log of all text.", CommandClear.ClearLog, "noargs");
 
-            AddCommand("Volume", "volume", "Set volume value to a float ranging from 0 to 1.",
-                CommandVolume.ChangeVolume, "[arg1] | float (0-1) | Set volume value.");
+            AddCommand("Volume", "volume", "Set volume value to a float ranging from 0.0 to 1.0.",
+                CommandVolume.ChangeVolume, "[arg1] | float (0.0 to 1.0) | Set volume value.");
 
             AddCommand("Exit", "exit", "Close the console.", CommandExit.ExitConsole, "noargs");
         }
@@ -591,6 +594,34 @@ namespace TauConsole
         #endregion
 
         #region Initialization
+
+        /// <summary>
+        /// Set all custom fonts.
+        /// </summary>
+        private void InitCustomFonts()
+        {
+            if (customFonts)
+            {
+                versionText.font = versionTextFont;
+                outputLogText.font = outputLogTextFont;
+                inputText.font = inputTextFont;
+                inputPlaceholderText.font = inputPlaceholderTextFont;
+            }
+        }
+
+        /// <summary>
+        /// Set all font sizes.
+        /// </summary>
+        private void InitFontSizes()
+        {
+            if (customFontSizes)
+            {
+                versionText.fontSize = versionTextFontSize;
+                outputLogText.fontSize = outputLogTextFontSize;
+                inputText.fontSize = inputTextFontSize;
+                inputPlaceholderText.fontSize = inputPlaceholderTextFontSize;
+            }
+        }
 
         /// <summary>
         /// Set all default log messages and their colors.

@@ -9,6 +9,26 @@
 
 ------------------
 // 28-01-2019
+// v0.3.1
+
+// Changes
+- Add custom fonts (just a shortcut [references] in the editor rather than going through each UI element)
+- Add custom font sizes (same as above, also see notes)
+- Change default font from SourceCodePro to UbuntuMono
+- Change volume command help text to be less ambiguous when it came to valid input ("0 - 1" changed to "0.0 to 1.0")
+
+// Fix
+- Fix reselect on submit
+- Fix the InputText object reference breaking sometimes (10/10, see notes)
+- Fix ResetPositionButton
+
+// Change Notes
+- Custom font sizes: larger font sizes *will* break functionality of the console. If the font is too large and goes out of the area of the text element, the font will not show.
+- InputText obj ref was breaking because I was setting it to null instead of InputText.text, which is the value of the text field..
+------------------
+
+------------------
+// 28-01-2019
 // v0.2.6
 
 // Changes

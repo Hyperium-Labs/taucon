@@ -2,25 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonBehaviour : MonoBehaviour
+namespace Common
 {
-    public GameObject Canvas;
-    public RectTransform Console;
-
-    public void CloseConsole()
+    public class ButtonBehaviour : MonoBehaviour
     {
-        Canvas.SetActive(!Canvas.activeSelf);
-    }
+        public GameObject Canvas;
+        public RectTransform Console;
 
-    public void ResetConsolePosition()
-    {
-        StartCoroutine(ResetPos());
-        Console.transform.position = Vector3.zero;
-    }
+        public void CloseConsole()
+        {
+            Canvas.SetActive(!Canvas.activeSelf);
+        }
 
-    IEnumerator ResetPos()
-    {
-        yield return new WaitForEndOfFrame();
-        Console.transform.position = Vector3.zero;
+        public void ResetConsolePosition()
+        {
+            Console.anchoredPosition = Vector3.zero;
+        }
     }
 }

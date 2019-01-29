@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Common.TGUI
+namespace Common
 {
     public class DragPanelBound : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
