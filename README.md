@@ -2,10 +2,6 @@
   <img width="auto" height="auto" src="Assets/Logos/TauCon_Thumbnail.png">
 </p>
 
-<p align="center">
-  <img width="auto" height="auto" src="Assets/Other/tc_colours.gif">
-</p>
-
 ## Features:
 
 - Input & parsing
@@ -39,6 +35,10 @@
   - Caret blink rate
   - Caret width (10 is a nice block)
   - Console 'version' text (the text at the top of the console)
+
+<p align="center">
+  <img width="auto" height="auto" src="Assets/Other/tc_colours.gif">
+</p>
 
 ## Planned:
 
