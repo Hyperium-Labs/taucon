@@ -61,5 +61,3 @@
 
 ---
 
-*I stole(borrowed) the colours (not the dark/light) for the predefined themes from [@stinja](https://github.com/stinja)*
-
