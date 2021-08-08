@@ -54,7 +54,7 @@ namespace Taucon
 
             foreach (string command in TauCon.Commands.Keys)
             {
-                result += TauCon.ColorString(command, TauCon.LogColor)
+                result += TauCon.Print(command)
                     + " \t";
             }
             return result;
