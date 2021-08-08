@@ -8,7 +8,7 @@ namespace Taucon
     /// <summary>
     /// This script must be attached to a separate (ALWAYS ACTIVE) GameObject
     /// </summary>
-    public class TauConToggle : MonoBehaviour
+    public class Toggle : MonoBehaviour
     {
 
         [Header("Toggle Button")]
@@ -51,7 +51,7 @@ namespace Taucon
                     }
                 }
 
-                if (!TauCon.Instance.ReselectConsoleOnSubmit)
+                if (!TauCon.Instance.RefocusConsoleOnSubmit)
                 {
                     StartCoroutine(TauCon.CaretToEnd(inputField));
                 }
