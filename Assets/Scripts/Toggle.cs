@@ -55,6 +55,9 @@ namespace Console
                 {
                     StartCoroutine(TauCon.CaretToPosition(inputField, inputField.text.Length));
                 }
+
+                TauCon.Instance.InputField.Select();
+                TauCon.Instance.InputField.ActivateInputField();
             }
         }
     }

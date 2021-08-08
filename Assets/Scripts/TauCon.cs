@@ -183,30 +183,36 @@ namespace Console
         private void HandleUnityLog(string logString, string trace, LogType logType)
         {
             string output = String.Empty;
+            string color = String.Empty;
 
             switch (logType)
             {
                 case LogType.Error:
                     output += LOGERROR;
+                    color = LogErrorColorHex;
                     break;
                 case LogType.Assert:
                     output += LOGASSERT;
+                    color = LogAssertColorHex;
                     break;
                 case LogType.Warning:
                     output += LOGWARNING;
+                    color = LogWarningColorHex;
                     break;
                 case LogType.Log:
                     output += LOGDEFAULT;
+                    color = LogDefaultColorHex;
                     break;
                 case LogType.Exception:
                     output += LOGEXCEPTION;
+                    color = LogExceptionColorHex;
                     break;
                 default:
                     return;
             }
 
             output += logString + (Instance.OutputStackTrace ? "\n" + trace : String.Empty);
-            Print(output);
+            Print(output, color);
         }
 
         #endregion
@@ -224,7 +230,10 @@ namespace Console
                 Commands.Remove(command);
                 return true;
             }
-            Debug.LogError(LOGCMDEXIST + command);
+            if (OutputUnityLog)
+            {
+                Debug.LogError(LOGCMDEXIST + command);
+            }
             return false;
         }
 
@@ -261,7 +270,6 @@ namespace Console
         /// <returns> Direct output of the method that is called</returns>
         public static string Eval(string command)
         {
-
             string output = string.Empty;
 
             Print(command);
@@ -436,8 +444,6 @@ namespace Console
                 return;
             }
 
-            Eval(command);
-
             if (ClearInputFieldOnSubmit)
             {
                 InputField.text = string.Empty;
@@ -449,6 +455,7 @@ namespace Console
                 InputField.ActivateInputField();
             }
 
+            Eval(command);
             RebuildOutputUI(OutputContent, OutputViewport, Scrollbar, InputField);
         }
 
@@ -541,14 +548,14 @@ namespace Console
         /// </summary>
         private static void InitDefaultLogMessages()
         {
-            LOGCMDINVALID = Print("Command invalid: ", ColorToHex(LogExceptionColor));
-            LOGCMDNOTFOUND = Print("Command unrecognized: ", ColorToHex(LogExceptionColor));
-            LOGCMDEXIST = Print("Command already exists: ", ColorToHex(LogExceptionColor));
-            LOGERROR = Print("Error: ", ColorToHex(LogErrorColor));
-            LOGWARNING = Print("Warning: ", ColorToHex(LogWarningColor));
-            LOGDEFAULT = Print("Log: ", ColorToHex(LogDefaultColor));
-            LOGEXCEPTION = Print("Exception: ", ColorToHex(LogExceptionColor));
-            LOGASSERT = Print("Assert: ", ColorToHex(LogAssertColor));
+            LOGCMDINVALID = Print("Command invalid: ", LogExceptionColorHex);
+            LOGCMDNOTFOUND = Print("Command unrecognized: ", LogExceptionColorHex);
+            LOGCMDEXIST = Print("Command already exists: ", LogExceptionColorHex);
+            LOGERROR = Print("Error: ", LogErrorColorHex);
+            LOGWARNING = Print("Warning: ", LogWarningColorHex);
+            LOGDEFAULT = Print("Log: ", LogDefaultColorHex);
+            LOGEXCEPTION = Print("Exception: ", LogExceptionColorHex);
+            LOGASSERT = Print("Assert: ", LogAssertColorHex);
         }
 
         /// <summary>
@@ -570,10 +577,10 @@ namespace Console
             InputField.caretWidth = CaretWidth;
             InputField.customCaretColor = true;
 
-            LogErrorColor = new Color32(233, 133, 128, 255);
-            LogExceptionColor = new Color32(233, 133, 128, 255);
-            LogWarningColor = new Color32(233, 133, 128, 255);
-            LogAssertColor = new Color32(233, 133, 128, 255);
+            LogErrorColor = new Color32(239, 83, 80, 255);
+            LogExceptionColor = new Color32(239, 83, 80, 255);
+            LogWarningColor = new Color32(239, 83, 80, 255);
+            LogAssertColor = new Color32(239, 83, 80, 255);
 
             LogDefaultColorHex = ColorToHex(LogDefaultColor);
             LogErrorColorHex = ColorToHex(LogErrorColor);

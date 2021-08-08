@@ -94,7 +94,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 208,
+      "Position.Y": 192,
       "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -154,11 +154,11 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 192,
+      "Position.Y": 208,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
-      "Description": "Bug: toggling console with RefocusConsoleOnSubmit checked\n\n- with it checked: does not focus console,\n focuses on input submit\n- with in unchecked: focuses console,\ndoes not refocus on input submit",
+      "Description": "Bug: toggling console with RefocusConsoleOnSubmit checked does not focus console\n\n- with it checked: does not focus console,\n focuses on input submit\n- with in unchecked: focuses console,\ndoes not refocus on input submit",
       "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 13:10:50"
@@ -168,17 +168,17 @@
       "Position.X": 0,
       "Position.Y": 176,
       "Checkbox.Checked": false,
-      "Progression.Current": 1,
-      "Progression.Max": 4,
-      "Description": "Bugfixes",
-      "Selected": true,
-      "TaskType.CurrentChoice": 1,
-      "CreationTime": "Aug 8 2021 13:11:19"
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Bug Fixin'",
+      "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 8 2021 16:06:07"
     }, 
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 224,
+      "Position.Y": 240,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -190,14 +190,26 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 240,
+      "Position.Y": 224,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
-      "Description": "Bug: Output is not coloured properly\n\npossibly non-\"Print()\"ed text, all text should\nbe hitting this method to be printed.\nexception is debug log",
+      "Description": "Bug: Output is not coloured properly\n\nRework OnOutput() functionality? Its weird\n\npossibly non-\"Print()\"ed text, all text should\nbe hitting this method to be printed.\nexception is debug log",
       "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 14:59:15"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 16,
+      "Position.Y": 256,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Bug: Using Unity Output or Stack Trace Output causes Unity to crash",
+      "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 8 2021 15:39:11"
     }
   ]
 }
