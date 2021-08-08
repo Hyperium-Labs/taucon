@@ -6,7 +6,7 @@ namespace Taucon
 
     [AddComponentMenu("Scripts/TauCon/TauConToggle")]
     /// <summary>
-    /// This script must be attached to a separate (always active) GameObject
+    /// This script must be attached to a separate (ALWAYS ACTIVE) GameObject
     /// </summary>
     public class TauConToggle : MonoBehaviour
     {
@@ -15,15 +15,16 @@ namespace Taucon
         // Set a "Console" Axes in Project Settings > Input
         // Then set this to the Axes name value
         // Default "Console"
+        // TODO(Turbits): Get the value of Input button "Console" positive button and pass it here?...might not be possible with default InputManager in Unity
+        // TODO (Turbits): 2021 - added to masterplan - with the new input manager i should look to see if i can refactor this into being much easier, something like creating the input and assigning it a button programmatically.
+        // i should also bring in the button here so that i can remove any added characters from the button if they get added to the input field accidentally
+        // maybe also some error checking to make sure that the button assigned isn't alphanumeric?
         public string toggleCommand = "Console";
-        // TODO(Turbits): Get the value of Input button "Console" positive button and pass it here...might not be possible with default InputManager in Unity
+        
 
         private GameObject tauCon;
         private InputField inputField;
 
-        /// <summary>
-        /// Called once in the lifetime of a script, after all Awake functions on all objects in a scene are called.
-        /// </summary>
         private void Start()
         {
             inputField = TauCon.Instance.InputField;
@@ -31,10 +32,7 @@ namespace Taucon
             tauCon.SetActive(false);
         }
 
-        /// <summary>
-        /// Called every frame, but update interval times will vary depending on FPS.
-        /// </summary>
-        void Update()
+        private void Update()
         {
             if (toggleCommand == string.Empty)
             {
@@ -53,7 +51,7 @@ namespace Taucon
                     }
                 }
 
-                if (!TauCon.Instance.ReselectOnSubmit)
+                if (!TauCon.Instance.ReselectConsoleOnSubmit)
                 {
                     StartCoroutine(TauCon.CaretToEnd(inputField));
                 }

@@ -48,16 +48,17 @@ namespace Taucon
         public int InputCharacterLimit = 60;
         public float CaretBlinkRate = 1.5f;
         public int CaretWidth = 10;
-        public bool ClearOnSubmit = true;
-        public bool ReselectOnSubmit = false;
-        public bool TabFocus = true;
+        public bool ClearInputFieldOnSubmit = true;
+        public bool ReselectConsoleOnSubmit = false;
         public bool OutputUnityLog = false;
         public bool OutputStackTrace = false;
         public bool AllowEmptyOutput = true;
-        public bool NewlineOnOutput = true;
-        public bool CaretCustomColor = false;
-        public bool CustomFonts = false;
-        public bool CustomFontSizes = false;
+        public bool AddNewlineOnOutput = true;
+        public bool UseCustomCaretColor = false;
+        [Tooltip("Setting this color will only work if the UseCustomCaretColor box is checked.")]
+        public Color32 CustomCaretColor;
+        public bool UseCustomFonts = false;
+        public bool UseCustomFontSizes = false;
 
         [Header("Fonts")]
         public Font OutputTextFont;
@@ -69,8 +70,7 @@ namespace Taucon
 
         #endregion
 
-        public static string LogCommandColor;
-        public static string LogColor;
+        public static string LogDefaultColor;
         public static string LogAssertColor;
         public static string LogWarningColor;
         public static string LogErrorColor;
@@ -87,7 +87,7 @@ namespace Taucon
 
         private static Color32 _initialInputSelectionColor;
         private static Color32 _initialCaretColor;
-        private static int _currentIndex;
+        private static int _currentLogHistoryIndex;
 #pragma warning disable
         private float _outputContentHeight;
 #pragma warning enable
@@ -128,8 +128,7 @@ namespace Taucon
                 Application.logMessageReceived += new Application.LogCallback(this.HandleUnityLog);
             }
 
-            // Init current index for History
-            _currentIndex = -1;
+            _currentLogHistoryIndex = -1;
 
             InitCustomFonts();
             InitFontSizes();
@@ -172,12 +171,6 @@ namespace Taucon
             {
                 FetchHistory(KeyCode.DownArrow);
             }
-
-            // Check for tab hit
-            if (Input.GetKeyDown(KeyCode.Tab) && TabFocus && !InputField.isFocused)
-            {
-                TauCon.Instance.InputField.ActivateInputField();
-            }
         }
 
         #endregion
@@ -209,7 +202,7 @@ namespace Taucon
                     return;
             }
 
-            output += logString + (Instance.OutputStackTrace ? "\n" + ColorString(trace, LogColor) : String.Empty);
+            output += logString + (Instance.OutputStackTrace ? "\n" + trace : String.Empty);
             Print(output);
         }
 
@@ -220,7 +213,6 @@ namespace Taucon
         /// <summary>
         /// Removes a command from the Commands Dictionary.
         /// </summary>
-        /// <param name="command">The command to remove from the Commands Dictionary.</param>
         /// <returns>True if command is successfully removed, False if command did not exist.</returns>
         public bool RemoveCommand(string command)
         {
@@ -270,7 +262,7 @@ namespace Taucon
 
             string output = string.Empty;
 
-            Print(Instance.PromptSymbol + " " + ColorString(command, LogCommandColor));
+            Print(command);
 
             if (string.IsNullOrEmpty(command))
             {
@@ -314,12 +306,12 @@ namespace Taucon
             string parameters = ExtractArguments(command, rawCommand);
             output = Commands[rawCommand].method(parameters);
 
-            if (Instance.NewlineOnOutput)
+            if (Instance.AddNewlineOnOutput)
             {
                 output += "\n";
             }
 
-            _currentIndex = -1;
+            _currentLogHistoryIndex = -1;
 
             return Print(output);
         }
@@ -327,21 +319,6 @@ namespace Taucon
         #endregion
 
         #region Utility Methods
-
-        /// <summary>
-        /// Used to color text in the logger by wrapping text in color tags.
-        /// </summary>
-        public static string ColorString(string text, string color = null)
-        {
-            if (color == null)
-            {
-                return "<color=#" + LogColor + ">" + text + "</color>";
-            }
-            else
-            {
-                return "<color=#" + color + ">" + text + "</color>";
-            }
-        }
 
         /// <summary>
         /// Extract the command and any arguments given.
@@ -421,7 +398,7 @@ namespace Taucon
         /// <param name="line">The line to append to the output log.</param>
         private void OnOutput(string line)
         {
-            if (Instance.NewlineOnOutput)
+            if (Instance.AddNewlineOnOutput)
             {
                 line += "\n";
             }
@@ -464,12 +441,12 @@ namespace Taucon
 
             Eval(command);
 
-            if (ClearOnSubmit)
+            if (ClearInputFieldOnSubmit)
             {
                 InputField.text = string.Empty;
             }
 
-            if (ReselectOnSubmit)
+            if (ReselectConsoleOnSubmit)
             {
                 InputField.Select();
                 InputField.ActivateInputField();
@@ -492,8 +469,9 @@ namespace Taucon
         /// </summary>
         /// <remarks>Overrides MonoBehaviour's Print method.</remarks>
         /// <param name="text">The string of text to send.</param>
-        /// <returns>Returns either an empty string if text is empty or the text given.</returns>
-        public static string Print(string text)
+        /// /// <param name="color">A colour in hex format.</param>
+        /// <returns>Returns either an empty string if text is empty or the text given, optionally coloured.</returns>
+        public static string Print(string text, string color = null)
         {
             if (text == null)
             {
@@ -507,7 +485,15 @@ namespace Taucon
             }
 
             SendOutputToListeners(text);
-            return text;
+
+            if (color == null)
+            {
+                return "<color=#" + LogDefaultColor + ">" + text + "</color>";
+            }
+            else
+            {
+                return "<color=#" + color + ">" + text + "</color>";
+            }
         }
 
         #endregion
@@ -515,7 +501,7 @@ namespace Taucon
         #region Built-in Console Commands
 
         /// <summary>
-        /// Initialize all default commands.
+        /// Initialize default commands.
         /// </summary>
         private void InitDefaultCommands()
         {
@@ -529,11 +515,11 @@ namespace Taucon
         #region Initialization
 
         /// <summary>
-        /// Set all custom fonts.
+        /// Initialize custom fonts.
         /// </summary>
         private void InitCustomFonts()
         {
-            if (CustomFonts)
+            if (UseCustomFonts)
             {
                 OutputLogText.font = OutputTextFont;
                 InputText.font = InputTextFont;
@@ -541,11 +527,11 @@ namespace Taucon
         }
 
         /// <summary>
-        /// Set all font sizes.
+        /// Initialize font sizes.
         /// </summary>
         private void InitFontSizes()
         {
-            if (CustomFontSizes)
+            if (UseCustomFontSizes)
             {
                 OutputLogText.fontSize = OutputTextFontSize;
                 InputText.fontSize = InputTextFontSize;
@@ -557,14 +543,14 @@ namespace Taucon
         /// </summary>
         private static void InitDefaultLogMessages()
         {
-            LOGCMDINVALID = ColorString("Command invalid: ", LogExceptionColor);
-            LOGCMDNOTFOUND = ColorString("Command unrecognized: ", LogExceptionColor);
-            LOGCMDEXIST = ColorString("Command already exists: ", LogExceptionColor);
-            LOGERROR = ColorString("Error: ", LogErrorColor);
-            LOGWARNING = ColorString("Warning: ", LogWarningColor);
-            LOGDEFAULT = ColorString("Log: ", LogColor);
-            LOGEXCEPTION = ColorString("Exception: ", LogExceptionColor);
-            LOGASSERT = ColorString("Assert: ", LogAssertColor);
+            LOGCMDINVALID = Print("Command invalid: ", LogExceptionColor);
+            LOGCMDNOTFOUND = Print("Command unrecognized: ", LogExceptionColor);
+            LOGCMDEXIST = Print("Command already exists: ", LogExceptionColor);
+            LOGERROR = Print("Error: ", LogErrorColor);
+            LOGWARNING = Print("Warning: ", LogWarningColor);
+            LOGDEFAULT = Print("Log: ", LogDefaultColor);
+            LOGEXCEPTION = Print("Exception: ", LogExceptionColor);
+            LOGASSERT = Print("Assert: ", LogAssertColor);
         }
 
         /// <summary>
@@ -586,19 +572,19 @@ namespace Taucon
             {
                 case PrimaryColorTheme.Dark:
                     SetConsoleColors(
-                        new Color32(46, 46, 46, 255),
-                        new Color32(58, 58, 58, 255),
-                        new Color32(73, 73, 73, 255),
-                        new Color32(188, 186, 184, 255),
-                        new Color32(164, 164, 164, 255));
+                        new Color32(43, 43, 43, 255),
+                        new Color32(66, 63, 62, 255),
+                        new Color32(245, 244, 244, 255),
+                        new Color32(233, 133, 128, 255),
+                        new Color32(245, 244, 244, 255));
                     break;
                 case PrimaryColorTheme.Light:
                     SetConsoleColors(
-                        new Color32(158, 158, 158, 255),
-                        new Color32(224, 224, 224, 255),
-                        new Color32(238, 238, 238, 255),
-                        new Color32(188, 186, 184, 255),
-                        new Color32(164, 164, 164, 255));
+                        new Color32(245, 244, 244, 255),
+                        new Color32(225, 225, 225, 255),
+                        new Color32(43, 43, 43, 255),
+                        new Color32(233, 133, 128, 255),
+                        new Color32(43, 43, 43, 255));
                     break;
             }
 
@@ -610,18 +596,13 @@ namespace Taucon
         /// <summary>
         /// Set console colours based on chosen colour variables.
         /// </summary>
-        /// <param name="mainPanelColor"></param>
-        /// <param name="inputFieldColor"></param>
-        /// <param name="inputTextColor"></param>
-        /// <param name="closeButtonColor"></param>
-        /// <param name="caretColor"></param>
         private void SetConsoleColors(Color32 mainPanelColor, Color32 inputFieldColor, Color32 inputTextColor, Color32 closeButtonColor, Color32 caretColor)
         {
-            MainPanel.GetComponent<Image>().color = new Color32(mainPanelColor.r, mainPanelColor.g, mainPanelColor.b, 255);
-            InputField.GetComponent<Image>().color = new Color32(inputFieldColor.r, inputFieldColor.g, inputFieldColor.b, 255);
-            InputText.color = new Color32(inputTextColor.r, inputTextColor.g, inputTextColor.b, 255);
-            CloseButton.GetComponent<Image>().color = new Color32(closeButtonColor.r, closeButtonColor.g, closeButtonColor.b, 200);
-            InputField.caretColor = new Color32(caretColor.r, caretColor.g, caretColor.b, 255);
+            MainPanel.GetComponent<Image>().color = new Color32(mainPanelColor.r, mainPanelColor.g, mainPanelColor.b, mainPanelColor.a);
+            InputField.GetComponent<Image>().color = new Color32(inputFieldColor.r, inputFieldColor.g, inputFieldColor.b, inputFieldColor.a);
+            InputText.color = new Color32(inputTextColor.r, inputTextColor.g, inputTextColor.b, inputTextColor.a);
+            CloseButton.GetComponent<Image>().color = new Color32(closeButtonColor.r, closeButtonColor.g, closeButtonColor.b, closeButtonColor.a);
+            InputField.caretColor = new Color32(caretColor.r, caretColor.g, caretColor.b, caretColor.a);
         }
 
         #endregion
@@ -631,41 +612,40 @@ namespace Taucon
         /// <summary>
         /// Populate InputField with command history.
         /// </summary>
-        /// <param name="key">KeyCode</param>
         private void FetchHistory(KeyCode key)
         {
             switch(key)
             {
                 case KeyCode.UpArrow:
-                    if (_currentIndex < 0)
+                    if (_currentLogHistoryIndex < 0)
                     {
-                        _currentIndex += 1;
-                        InputField.text = CommandHistory[_currentIndex];
+                        _currentLogHistoryIndex += 1;
+                        InputField.text = CommandHistory[_currentLogHistoryIndex];
                         break;
                     }
-                    else if (_currentIndex == CommandHistory.Count - 1)
+                    else if (_currentLogHistoryIndex == CommandHistory.Count - 1)
                     {
                         InputField.text = CommandHistory[CommandHistory.Count - 1];
                         break;
                     }
                     else
                     {
-                        _currentIndex += 1;
-                        InputField.text = CommandHistory.ElementAt(_currentIndex);
+                        _currentLogHistoryIndex += 1;
+                        InputField.text = CommandHistory.ElementAt(_currentLogHistoryIndex);
                         break;
                     }
                 case KeyCode.DownArrow:
-                    if (_currentIndex <= 0)
+                    if (_currentLogHistoryIndex <= 0)
                     {
-                        _currentIndex = -1;
+                        _currentLogHistoryIndex = -1;
                         InputField.text = "";
                         StartCoroutine(CaretToEnd(InputField));
                         break;
                     }
                     else
                     {
-                        _currentIndex -= 1;
-                        InputField.text = CommandHistory.ElementAt(_currentIndex);
+                        _currentLogHistoryIndex -= 1;
+                        InputField.text = CommandHistory.ElementAt(_currentLogHistoryIndex);
                         StartCoroutine(CaretToEnd(InputField));
                         break;
                     }
