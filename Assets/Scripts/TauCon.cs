@@ -30,24 +30,20 @@ namespace Taucon
 
         [Header("UI Components")]
         public Canvas Canvas;
-        public GameObject VersionPanel;
-        public GameObject OutputPanel;
+        public GameObject MainPanel;
         public ScrollRect OutputLogScrollRect;
         public RectTransform OutputViewport;
         public RectTransform OutputContent;
         public Text OutputLogText;
         public InputField InputField;
         public Text InputText;
-        public Text InputPlaceholderText;
         public Scrollbar Scrollbar;
         public RectTransform ScrollbarHandle;
-        public Button ForceExitButton;
+        public Button CloseButton;
 
         [Header("Console Options")]
         public char PromptSymbol = '>';
         public PrimaryColorTheme ColorTheme;
-        [Tooltip("This means you are going to set your own colours.")]
-        public bool UseCustomTheme = false;
         public int MaxLines = 5000;
         public int InputCharacterLimit = 60;
         public float CaretBlinkRate = 1.5f;
@@ -59,30 +55,35 @@ namespace Taucon
         public bool OutputStackTrace = false;
         public bool AllowEmptyOutput = true;
         public bool NewlineOnOutput = true;
-        public bool CaretCustomColor = true;
+        public bool CaretCustomColor = false;
         public bool CustomFonts = false;
         public bool CustomFontSizes = false;
 
         [Header("Fonts")]
-        public Font VersionTextFont;
-        public Font OutputLogTextFont;
+        public Font OutputTextFont;
         public Font InputTextFont;
-        public Font InputPlaceholderTextFont;
 
         [Header("Font Sizes")]
-        public int VersionTextFontSize = 14;
-        public int OutputLogTextFontSize = 14;
+        public int OutputTextFontSize = 14;
         public int InputTextFontSize = 14;
-        public int InputPlaceholderTextFontSize = 14;
 
         #endregion
 
-        public static string CommandColor;
+        public static string LogCommandColor;
         public static string LogColor;
-        public static string AssertColor;
-        public static string WarningColor;
-        public static string ErrorColor;
-        public static string ExceptionColor;
+        public static string LogAssertColor;
+        public static string LogWarningColor;
+        public static string LogErrorColor;
+        public static string LogExceptionColor;
+
+        private static string LOGERROR;
+        private static string LOGWARNING;
+        private static string LOGDEFAULT;
+        private static string LOGEXCEPTION;
+        private static string LOGASSERT;
+        private static string LOGCMDINVALID;
+        private static string LOGCMDNOTFOUND;
+        private static string LOGCMDEXIST;
 
         private static Color32 _initialInputSelectionColor;
         private static Color32 _initialCaretColor;
@@ -183,14 +184,6 @@ namespace Taucon
 
         #region Warn Logging
 
-        private static string LOGERROR;
-        private static string LOGWARNING;
-        private static string LOGDEFAULT;
-        private static string LOGEXCEPTION;
-        private static string LOGASSERT;
-        private static string LOGINVALIDCMD;
-        private static string LOGCMDNOTFOUND;
-
         private void HandleUnityLog(string logString, string trace, LogType logType)
         {
             string output = String.Empty;
@@ -228,7 +221,7 @@ namespace Taucon
         /// Removes a command from the Commands Dictionary.
         /// </summary>
         /// <param name="command">The command to remove from the Commands Dictionary.</param>
-        /// <returns>True/False if Commands contains given command.</returns>
+        /// <returns>True if command is successfully removed, False if command did not exist.</returns>
         public bool RemoveCommand(string command)
         {
             if (Commands.ContainsKey(command))
@@ -236,6 +229,7 @@ namespace Taucon
                 Commands.Remove(command);
                 return true;
             }
+            Debug.LogError(LOGCMDEXIST + command);
             return false;
         }
 
@@ -250,15 +244,9 @@ namespace Taucon
         /// <returns>True/False if command is added successfully.</returns>
         public static bool AddCommand(string name, string command, string description, Func<string, string> method, string helpText = "No help text.")
         {
-            if (string.IsNullOrEmpty(command))
-            {
-                Debug.LogError("Could not add command to console { " + command + " }, command is empty");
-                return false;
-            }
-
             if (Commands.ContainsKey(command))
             {
-                Debug.LogError("Could not add command to console { " + command + " }, command already exists");
+                Debug.LogError(LOGCMDEXIST + command);
                 return false;
             }
 
@@ -282,44 +270,49 @@ namespace Taucon
 
             string output = string.Empty;
 
-            Print(Instance.PromptSymbol + " " + ColorString(command, CommandColor));
+            Print(Instance.PromptSymbol + " " + ColorString(command, LogCommandColor));
 
             if (string.IsNullOrEmpty(command))
             {
-                Debug.Log("Invalid Cmd");
-                output = LOGINVALIDCMD;
+                if (Instance.OutputUnityLog)
+                {
+                    Debug.LogError(LOGCMDINVALID + command);
+                }
+                output = LOGCMDINVALID + command;
                 return Print(output);
             }
 
             command.ToLower();
 
-            string[] parsedCmd = command.Split(' ');
-
-            string rawCmd = parsedCmd[0];
-            string trimmedCmd = string.Join(" ", parsedCmd).Trim();
+            string[] parsedCommand = command.Split(' ');
+            string rawCommand = parsedCommand[0];
+            string trimmedCommand = string.Join(" ", parsedCommand).Trim();
 
             // Check to see if our History array does NOT contain the evaluated cmd
-            if (!CommandHistory.Contains(trimmedCmd))
+            if (!CommandHistory.Contains(trimmedCommand))
             {
                 // If it does not contain it, prepend it
-                CommandHistory.Insert(0, trimmedCmd);
+                CommandHistory.Insert(0, trimmedCommand);
             }
             else
             {
                 // If it does contain it, remove it from the array and prepend it
-                CommandHistory.Remove(trimmedCmd);
-                CommandHistory.Insert(0, trimmedCmd);
+                CommandHistory.Remove(trimmedCommand);
+                CommandHistory.Insert(0, trimmedCommand);
             }
 
-            if (!Commands.ContainsKey(rawCmd))
+            if (!Commands.ContainsKey(rawCommand))
             {
-                Debug.Log("Command not found");
-                output = LOGCMDNOTFOUND + rawCmd;
+                if (Instance.OutputUnityLog)
+                {
+                    Debug.LogError(LOGCMDINVALID + rawCommand);
+                }
+                output = LOGCMDNOTFOUND + rawCommand;
                 return Print(output);
             }
 
-            string parameters = ExtractParameters(command, rawCmd);
-            output = Commands[rawCmd].method(parameters);
+            string parameters = ExtractArguments(command, rawCommand);
+            output = Commands[rawCommand].method(parameters);
 
             if (Instance.NewlineOnOutput)
             {
@@ -335,9 +328,8 @@ namespace Taucon
 
         #region Utility Methods
 
-        /// <summary>Used to color text in the logger by wrapping text in color tags
-        /// <para>string text</para>
-        /// <para>[string color(hex) = null]</para>
+        /// <summary>
+        /// Used to color text in the logger by wrapping text in color tags.
         /// </summary>
         public static string ColorString(string text, string color = null)
         {
@@ -352,19 +344,17 @@ namespace Taucon
         }
 
         /// <summary>
-        /// Extract the command and any parameters given.
+        /// Extract the command and any arguments given.
         /// </summary>
-        /// <param name="command">The command used.</param>
-        /// <param name="rawCmd">The raw command without parameters.</param>
-        /// <returns></returns>
-        private static string ExtractParameters(string command, string rawCmd)
+        /// <returns>A list of arguments passed into the command.</returns>
+        private static string ExtractArguments(string command, string rawCommand)
         {
-            string parameters = (command.Length > rawCmd.Length) ? command.Substring(rawCmd.Length + 1, command.Length - (rawCmd.Length + 1)) : string.Empty;
-            return parameters.Trim();
+            string arguments = (command.Length > rawCommand.Length) ? command.Substring(rawCommand.Length + 1, command.Length - (rawCommand.Length + 1)) : string.Empty;
+            return arguments.Trim();
         }
 
         /// <summary>
-        /// Sort the commands alphabetically in the dictionary (for help list)
+        /// Sort all commands alphabetically in the dictionary (for help list).
         /// </summary>
         private static void SortCommands()
         {
@@ -379,26 +369,18 @@ namespace Taucon
         /// <returns>null</returns>
         public static IEnumerator CaretToEnd(InputField inputField)
         {
-            // Focus the given input field
             inputField.ActivateInputField();
-            // Hide the selection color
             inputField.selectionColor = new Color32(0, 0, 0, 0);
             inputField.caretColor = new Color32(0, 0, 0, 0);
-            // Wait for 1 frame
             yield return null;
-            // Move the input field caret to the end of the text
             inputField.caretPosition = inputField.text.Length;
-            // Reset selection color to initial color
             inputField.selectionColor = _initialInputSelectionColor;
             inputField.caretColor = _initialCaretColor;
             inputField.Rebuild(CanvasUpdate.PreRender);
         }
 
         /// <summary>
-        /// Rebuilds the output UI to account for log output (resizes the outputContentScrollRect height)
-        /// <para>RectTransform content</para>
-        /// <para>RectTransform parent</para>
-        /// <para>Scrollbar scrollbar</para>
+        /// Rebuilds the output UI to account for log output (resizes the outputContentScrollRect height).
         /// </summary>
         public void RebuildOutputUI(RectTransform content, RectTransform parent, Scrollbar scrollbar, InputField inputField)
         {
@@ -422,7 +404,7 @@ namespace Taucon
         #region Printing & Output
 
         /// <summary>
-        /// A method to act on the onEndEdit event for an InputField in Unity, checks for "Submit" event and calls tauConGUI.OnInput()
+        /// A method to act on the onEndEdit event for an InputField in Unity, checks for "Submit" event and calls <see cref="TauCon.OnInput()."/>
         /// </summary>
         /// <param name="line"></param>
         private void OnEndEdit(string line)
@@ -444,15 +426,12 @@ namespace Taucon
                 line += "\n";
             }
 
-            // Push log to LogHistory
             LogHistory.Insert(0, line);
 
             if (LogHistory.Count >= MaxLines)
             {
-                // Remove the last logged item in the list
                 LogHistory.RemoveAt(LogHistory.Count - 1);
 
-                // clear output log
                 OutputLogText.text = null;
 
                 for (int i = LogHistory.Count - 1; i > 0; i--)
@@ -462,7 +441,11 @@ namespace Taucon
                 }
             }
 
-            Debug.Log(string.Join(", ", LogHistory.ToArray()));
+            // REMOVE
+            if (Instance.OutputUnityLog)
+            {
+                Debug.Log(string.Join(", ", LogHistory.ToArray()));
+            }
 
             OutputLogText.text += line;
             RebuildOutputUI(OutputContent, OutputViewport, Scrollbar, InputField);
@@ -473,31 +456,25 @@ namespace Taucon
         /// </summary>
         private void OnInput()
         {
-            // Get the value of the input field
             string command = InputField.text;
-            // If there's no command, return
             if (string.IsNullOrEmpty(command))
             {
                 return;
             }
 
-            // Otherwise continue...
-            // Send command to console & eval
             Eval(command);
 
-            // If clearOnSubmit is enabled
             if (ClearOnSubmit)
             {
-                // Clear the input field
                 InputField.text = string.Empty;
             }
-            // If reselectOnSubmit is enabled
+
             if (ReselectOnSubmit)
             {
                 InputField.Select();
                 InputField.ActivateInputField();
             }
-            // And then rebuild the UI elements that need to be rebuilt to show changes
+
             RebuildOutputUI(OutputContent, OutputViewport, Scrollbar, InputField);
         }
 
@@ -538,20 +515,13 @@ namespace Taucon
         #region Built-in Console Commands
 
         /// <summary>
-        /// Initialize all default commands 
+        /// Initialize all default commands.
         /// </summary>
         private void InitDefaultCommands()
         {
             AddCommand("Help", "help", "Show help on how to use the console.", CommandHelp.GetHelp, "[arg1] | string (cmd) | Show help text for given command.");
-
-            AddCommand("Exit", "exit", "Exits the application.", CommandQuit.QuitApplication, "noargs");
-
-            AddCommand("Clear", "clear", "Clears the output log of all text.", CommandClear.ClearLog, "noargs");
-
-            AddCommand("Volume", "volume", "Set volume value to a float ranging from 0.0 to 1.0.",
-                CommandVolume.ChangeVolume, "[arg1] | float (0.0 to 1.0) | Set volume value.");
-
-            AddCommand("Exit", "exit", "Close the console.", CommandExit.ExitConsole, "noargs");
+            AddCommand("Exit", "exit", "Closes the console.", CommandExit.ExitConsole);
+            AddCommand("Clear", "clear", "Clears the console of all text.", CommandClear.ClearLog);
         }
 
         #endregion
@@ -565,9 +535,8 @@ namespace Taucon
         {
             if (CustomFonts)
             {
-                OutputLogText.font = OutputLogTextFont;
+                OutputLogText.font = OutputTextFont;
                 InputText.font = InputTextFont;
-                InputPlaceholderText.font = InputPlaceholderTextFont;
             }
         }
 
@@ -578,9 +547,8 @@ namespace Taucon
         {
             if (CustomFontSizes)
             {
-                OutputLogText.fontSize = OutputLogTextFontSize;
+                OutputLogText.fontSize = OutputTextFontSize;
                 InputText.fontSize = InputTextFontSize;
-                InputPlaceholderText.fontSize = InputPlaceholderTextFontSize;
             }
         }
 
@@ -589,13 +557,14 @@ namespace Taucon
         /// </summary>
         private static void InitDefaultLogMessages()
         {
-            LOGINVALIDCMD = ColorString("Command invalid: ", ExceptionColor);
-            LOGCMDNOTFOUND = ColorString("Command unrecognized: ", ExceptionColor);
-            LOGERROR = ColorString("Error: ", ErrorColor);
-            LOGWARNING = ColorString("Warning: ", WarningColor);
+            LOGCMDINVALID = ColorString("Command invalid: ", LogExceptionColor);
+            LOGCMDNOTFOUND = ColorString("Command unrecognized: ", LogExceptionColor);
+            LOGCMDEXIST = ColorString("Command already exists: ", LogExceptionColor);
+            LOGERROR = ColorString("Error: ", LogErrorColor);
+            LOGWARNING = ColorString("Warning: ", LogWarningColor);
             LOGDEFAULT = ColorString("Log: ", LogColor);
-            LOGEXCEPTION = ColorString("Exception: ", ExceptionColor);
-            LOGASSERT = ColorString("Assert: ", AssertColor);
+            LOGEXCEPTION = ColorString("Exception: ", LogExceptionColor);
+            LOGASSERT = ColorString("Assert: ", LogAssertColor);
         }
 
         /// <summary>
@@ -609,31 +578,28 @@ namespace Taucon
         }
 
         /// <summary>
-        /// Sets all GUI image color values and settings.
+        /// Initialize all GUI image color values and settings.
         /// </summary>
         private void InitConsoleGUI()
         {
-            if (!UseCustomTheme)
+            switch (ColorTheme)
             {
-                switch (ColorTheme)
-                {
-                    case PrimaryColorTheme.Dark:
-                        SetConsoleColors(
-                            new Color32(46, 46, 46, 255),
-                            new Color32(58, 58, 58, 255),
-                            new Color32(73, 73, 73, 255),
-                            new Color32(188, 186, 184, 255),
-                            new Color32(164, 164, 164, 255));
-                        break;
-                    case PrimaryColorTheme.Light:
-                        SetConsoleColors(
-                            new Color32(158, 158, 158, 255),
-                            new Color32(224, 224, 224, 255),
-                            new Color32(238, 238, 238, 255),
-                            new Color32(188, 186, 184, 255),
-                            new Color32(164, 164, 164, 255));
-                        break;
-                }
+                case PrimaryColorTheme.Dark:
+                    SetConsoleColors(
+                        new Color32(46, 46, 46, 255),
+                        new Color32(58, 58, 58, 255),
+                        new Color32(73, 73, 73, 255),
+                        new Color32(188, 186, 184, 255),
+                        new Color32(164, 164, 164, 255));
+                    break;
+                case PrimaryColorTheme.Light:
+                    SetConsoleColors(
+                        new Color32(158, 158, 158, 255),
+                        new Color32(224, 224, 224, 255),
+                        new Color32(238, 238, 238, 255),
+                        new Color32(188, 186, 184, 255),
+                        new Color32(164, 164, 164, 255));
+                    break;
             }
 
             InputField.caretBlinkRate = CaretBlinkRate;
@@ -641,12 +607,20 @@ namespace Taucon
             InputField.customCaretColor = CaretCustomColor;
         }
 
-        private void SetConsoleColors(Color32 outputPanelColor, Color32 inputFieldColor, Color32 inputTextColor, Color32 forceExitButton, Color32 caretColor)
+        /// <summary>
+        /// Set console colours based on chosen colour variables.
+        /// </summary>
+        /// <param name="mainPanelColor"></param>
+        /// <param name="inputFieldColor"></param>
+        /// <param name="inputTextColor"></param>
+        /// <param name="closeButtonColor"></param>
+        /// <param name="caretColor"></param>
+        private void SetConsoleColors(Color32 mainPanelColor, Color32 inputFieldColor, Color32 inputTextColor, Color32 closeButtonColor, Color32 caretColor)
         {
-            OutputPanel.GetComponent<Image>().color = new Color32(outputPanelColor.r, outputPanelColor.g, outputPanelColor.b, 255);
+            MainPanel.GetComponent<Image>().color = new Color32(mainPanelColor.r, mainPanelColor.g, mainPanelColor.b, 255);
             InputField.GetComponent<Image>().color = new Color32(inputFieldColor.r, inputFieldColor.g, inputFieldColor.b, 255);
             InputText.color = new Color32(inputTextColor.r, inputTextColor.g, inputTextColor.b, 255);
-            ForceExitButton.GetComponent<Image>().color = new Color32(forceExitButton.r, forceExitButton.g, forceExitButton.b, 200);
+            CloseButton.GetComponent<Image>().color = new Color32(closeButtonColor.r, closeButtonColor.g, closeButtonColor.b, 200);
             InputField.caretColor = new Color32(caretColor.r, caretColor.g, caretColor.b, 255);
         }
 
@@ -655,12 +629,12 @@ namespace Taucon
         #region Command History
 
         /// <summary>
-        /// Populate InputField based on command history
+        /// Populate InputField with command history.
         /// </summary>
-        /// <param name="dir">KeyCode</param>
-        private void FetchHistory(KeyCode dir)
+        /// <param name="key">KeyCode</param>
+        private void FetchHistory(KeyCode key)
         {
-            switch(dir)
+            switch(key)
             {
                 case KeyCode.UpArrow:
                     if (_currentIndex < 0)
