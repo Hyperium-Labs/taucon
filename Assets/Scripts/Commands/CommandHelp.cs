@@ -31,16 +31,20 @@ namespace Taucon
 
             if (!TauCon.Commands.ContainsKey(param))
             {
-                return $"{param} does not exist.";
+                return $"{TauCon.LOGCMDINVALID + param}";
             }
             else if (TauCon.Commands.ContainsKey(param))
             {
                 Command command = TauCon.Commands[param];
+                if (command.helpText == string.Empty)
+                {
+                    return $"{param} does not have help text.";
+                }
                 return $"{command.helpText}";
             }
             else
             {
-                return $"{param} does not have help text.";
+                return $"{TauCon.LOGERROR} + Unspecified";
             }
         }
 
@@ -54,8 +58,7 @@ namespace Taucon
 
             foreach (string command in TauCon.Commands.Keys)
             {
-                result += TauCon.Print(command)
-                    + " \t";
+                result += TauCon.Print(command) + "\t";
             }
             return result;
         }
