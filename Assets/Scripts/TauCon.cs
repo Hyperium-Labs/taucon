@@ -54,9 +54,6 @@ namespace Taucon
         public bool OutputStackTrace = false;
         public bool AllowEmptyOutput = true;
         public bool AddNewlineOnOutput = true;
-        public bool UseCustomCaretColor = false;
-        [Tooltip("Setting this color will only work if the UseCustomCaretColor box is checked.")]
-        public Color32 CustomCaretColor;
         public bool UseCustomFonts = false;
         public bool UseCustomFontSizes = false;
 
@@ -280,18 +277,7 @@ namespace Taucon
             string rawCommand = parsedCommand[0];
             string trimmedCommand = string.Join(" ", parsedCommand).Trim();
 
-            // Check to see if our History array does NOT contain the evaluated cmd
-            if (!CommandHistory.Contains(trimmedCommand))
-            {
-                // If it does not contain it, prepend it
-                CommandHistory.Insert(0, trimmedCommand);
-            }
-            else
-            {
-                // If it does contain it, remove it from the array and prepend it
-                CommandHistory.Remove(trimmedCommand);
-                CommandHistory.Insert(0, trimmedCommand);
-            }
+            CommandHistory.Insert(0, trimmedCommand);
 
             if (!Commands.ContainsKey(rawCommand))
             {
@@ -568,6 +554,10 @@ namespace Taucon
         /// </summary>
         private void InitConsoleGUI()
         {
+            InputField.caretBlinkRate = CaretBlinkRate;
+            InputField.caretWidth = CaretWidth;
+            InputField.customCaretColor = true;
+
             switch (ColorTheme)
             {
                 case PrimaryColorTheme.Dark:
@@ -587,10 +577,6 @@ namespace Taucon
                         new Color32(43, 43, 43, 255));
                     break;
             }
-
-            InputField.caretBlinkRate = CaretBlinkRate;
-            InputField.caretWidth = CaretWidth;
-            InputField.customCaretColor = CaretCustomColor;
         }
 
         /// <summary>
