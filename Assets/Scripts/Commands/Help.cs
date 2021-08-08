@@ -1,22 +1,13 @@
 ﻿using UnityEngine;
 
-namespace Taucon
+namespace Console.Cmd
 {
 
     /// <summary>
     /// Adds Help command to the console. Use to get help text of specific commands or a list of available commands.
     /// </summary>
-    public class CommandHelp : ScriptableObject
+    public class Help
     {
-
-        /// <summary>
-        /// Called once in the lifetime of a script, before any Start functions are called.
-        /// </summary>
-        private void Awake()
-        {
-            hideFlags = HideFlags.HideAndDontSave;
-        }
-
         /// <summary>
         /// Prints command help texts or calls <see cref="ListCommands()"/> to get a list of commands.
         /// </summary>
@@ -46,21 +37,6 @@ namespace Taucon
             {
                 return $"{TauCon.LOGERROR} + Unspecified";
             }
-        }
-
-        /// <summary>
-        /// Returns a list of available commands.
-        /// </summary>
-        /// <returns>A list of all available commands.</returns>
-        private static string ListCommands()
-        {
-            string result = string.Empty;
-
-            foreach (string command in TauCon.Commands.Keys)
-            {
-                result += TauCon.Print(command) + "\t";
-            }
-            return result;
         }
     }
 }

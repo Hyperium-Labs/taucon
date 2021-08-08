@@ -47,7 +47,7 @@
       "BoardIndex": 0,
       "Position.X": 0,
       "Position.Y": 48,
-      "Checkbox.Checked": false,
+      "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Remove volume command",
@@ -59,7 +59,7 @@
       "BoardIndex": 0,
       "Position.X": 0,
       "Position.Y": 64,
-      "Checkbox.Checked": false,
+      "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Remove 'quit' command",
@@ -71,7 +71,7 @@
       "BoardIndex": 0,
       "Position.X": 0,
       "Position.Y": 80,
-      "Checkbox.Checked": false,
+      "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Refactor 'exit' command to close the console",
@@ -93,13 +93,25 @@
     }, 
     {
       "BoardIndex": 0,
-      "Position.X": 0,
-      "Position.Y": 112,
+      "Position.X": 16,
+      "Position.Y": 208,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
-      "Description": "Add 'commands' command, to list all commands",
+      "Description": "Bug: 'help' null param text is printed twice\n\n\"Type 'help \u003ccommand\u003e' for \nhelp with a specific command.\"",
       "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 8 2021 14:10:01"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 0,
+      "Position.Y": 112,
+      "Checkbox.Checked": true,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Add 'commands' command, to list all commands",
+      "Selected": true,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 11:13:48"
     }, 
@@ -162,6 +174,18 @@
       "Selected": false,
       "TaskType.CurrentChoice": 1,
       "CreationTime": "Aug 8 2021 13:11:19"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 16,
+      "Position.Y": 224,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Bug: Exit command throws NullReferenceException",
+      "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 8 2021 14:34:13"
     }
   ]
 }

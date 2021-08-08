@@ -493,7 +493,7 @@ MonoBehaviour:
   Scrollbar: {fileID: 7813404898534035474}
   ScrollbarHandle: {fileID: 7813404898261457357}
   CloseButton: {fileID: 7813404899058564970}
-  ColorTheme: 1
+  ColorTheme: 0
   MaxLines: 5000
   InputCharacterLimit: 60
   CaretBlinkRate: 1.5
@@ -510,21 +510,6 @@ MonoBehaviour:
   InputTextFont: {fileID: 0}
   OutputTextFontSize: 14
   InputTextFontSize: 14
-  LogDefaultColor:
-    serializedVersion: 2
-    rgba: 0
-  LogAssertColor:
-    serializedVersion: 2
-    rgba: 0
-  LogWarningColor:
-    serializedVersion: 2
-    rgba: 0
-  LogErrorColor:
-    serializedVersion: 2
-    rgba: 0
-  LogExceptionColor:
-    serializedVersion: 2
-    rgba: 0
 --- !u!1 &2119797421
 GameObject:
   m_ObjectHideFlags: 0

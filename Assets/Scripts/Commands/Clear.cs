@@ -2,20 +2,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Taucon
+namespace Console.Cmd
 {
 
     /// <summary>
-    /// Short description of what the command does.
+    /// Clears the output log of all text
     /// </summary>
-    public class CommandClear : ScriptableObject
+    public class Clear
     {
-
-        private void Awake()
-        {
-            this.hideFlags = HideFlags.HideAndDontSave;
-        }
-
         public static string ClearLog(string param)
         {
             TauCon.Instance.OutputLogText.text = "";

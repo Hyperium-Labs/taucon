@@ -1,22 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Taucon
+namespace Console.Cmd
 {
     /// <summary>
     /// Adds Exit command to console. This will close the console window.
     /// </summary>
-    public class CommandExit : ScriptableObject
+    public class Exit
     {
-
-        /// <summary>
-        /// This function is called when the object becomes enabled and active.
-        /// </summary>
-        private void Awake()
-        {
-            this.hideFlags = HideFlags.HideAndDontSave;
-        }
-
         /// <summary>
         /// Exits the console.
         /// </summary>
