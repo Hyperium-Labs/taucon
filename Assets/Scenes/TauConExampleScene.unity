@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3b33a1aa0c2b4cb8b5cba984456bfe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleCommand: Console
+  toggleInput: Console
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,8 +496,8 @@ MonoBehaviour:
   ColorTheme: 0
   MaxLines: 5000
   InputCharacterLimit: 60
-  CaretBlinkRate: 1.5
-  CaretWidth: 10
+  CaretBlinkRate: 1
+  CaretWidth: 8
   ClearInputFieldOnSubmit: 1
   RefocusConsoleOnSubmit: 1
   OutputUnityLog: 0

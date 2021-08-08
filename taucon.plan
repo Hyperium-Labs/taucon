@@ -10,7 +10,7 @@
   "TaskTransparency": 5,
   "OutlineTasks": true,
   "BracketSubtasks": true,
-  "TaskShadow": 2,
+  "TaskShadow": 3,
   "ShowIcons": true,
   "NumberTopLevel": true,
   "NumberingSequence": 0,
@@ -95,7 +95,7 @@
       "BoardIndex": 0,
       "Position.X": 16,
       "Position.Y": 208,
-      "Checkbox.Checked": false,
+      "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Bug: 'help' null param text is printed twice\n\n\"Type 'help \u003ccommand\u003e' for \nhelp with a specific command.\"",
@@ -111,7 +111,7 @@
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Add 'commands' command, to list all commands",
-      "Selected": true,
+      "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 11:13:48"
     }, 
@@ -143,7 +143,7 @@
       "BoardIndex": 0,
       "Position.X": 0,
       "Position.Y": 160,
-      "Checkbox.Checked": false,
+      "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Refactor history log; remove/readd\n\nCurrently checking for existing commands in\nhistory and removing/readding them. Thats\nnot how any CLI i've used works, remove that",
@@ -168,10 +168,10 @@
       "Position.X": 0,
       "Position.Y": 176,
       "Checkbox.Checked": false,
-      "Progression.Current": 0,
-      "Progression.Max": 0,
+      "Progression.Current": 1,
+      "Progression.Max": 4,
       "Description": "Bugfixes",
-      "Selected": false,
+      "Selected": true,
       "TaskType.CurrentChoice": 1,
       "CreationTime": "Aug 8 2021 13:11:19"
     }, 
@@ -186,6 +186,18 @@
       "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 14:34:13"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 16,
+      "Position.Y": 240,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Bug: Output is not coloured properly\n\npossibly non-\"Print()\"ed text, all text should\nbe hitting this method to be printed.\nexception is debug log",
+      "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 8 2021 14:59:15"
     }
   ]
 }
