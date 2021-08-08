@@ -35,7 +35,7 @@
       "BoardIndex": 0,
       "Position.X": 32,
       "Position.Y": 48,
-      "Checkbox.Checked": true,
+      "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Rewrite the default color scheme RGBs",
@@ -96,7 +96,7 @@
       "Position.X": 0,
       "Position.Y": 32,
       "Checkbox.Checked": false,
-      "Progression.Current": 1,
+      "Progression.Current": 0,
       "Progression.Max": 8,
       "Description": "2021 Refactor",
       "Selected": false,
@@ -138,18 +138,6 @@
       "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 11:48:32"
-    }, 
-    {
-      "BoardIndex": 0,
-      "Position.X": 32,
-      "Position.Y": 176,
-      "Checkbox.Checked": false,
-      "Progression.Current": 0,
-      "Progression.Max": 0,
-      "Description": "Refactor history log; remove/readd\n\nCurrently checking for existing commands in\nhistory and removing/readding them. Thats\nnot how any CLI i've used works, remove that",
-      "Selected": true,
-      "TaskType.CurrentChoice": 0,
-      "CreationTime": "Aug 8 2021 12:06:59"
     }
   ]
 }
