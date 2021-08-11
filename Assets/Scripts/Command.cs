@@ -3,7 +3,7 @@
 namespace Console
 {
     /// <summary>
-    /// Constructor class for TauCon commands.
+    /// Constructor class for TauCon commands
     /// </summary>
     public class Command
     {

@@ -5,7 +5,7 @@ namespace Console.Cmd
 {
 
     /// <summary>
-    /// Short description of what the command does.
+    /// Short description of what the command does
     /// </summary>
     public class Template
     {
