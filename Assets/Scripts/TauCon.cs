@@ -57,11 +57,13 @@ namespace Console
         public bool UseCustomFonts = false;
         public bool UseCustomFontSizes = false;
 
-        [Header("Fonts")]
+        [Header("Custom Fonts")]
+        [Tooltip("Using this will override the default Roboto Mono font.")]
         public Font OutputTextFont;
+        [Tooltip("Using this will override the default Roboto Mono font.")]
         public Font InputTextFont;
 
-        [Header("Font Sizes")]
+        [Header("Custom Font Sizes")]
         public int OutputTextFontSize = 14;
         public int InputTextFontSize = 14;
 
@@ -147,7 +149,7 @@ namespace Console
         }
 
         /// <summary>
-        /// Called every frame, but update interval times will vary depending on FPS.
+        /// Called every frame, but update interval times will vary depending on FPS
         /// </summary>
         private void Update()
         {
@@ -220,9 +222,9 @@ namespace Console
         #region Adding & Removing ConsoleCommands
 
         /// <summary>
-        /// Removes a command from the Commands Dictionary.
+        /// Removes a command from the Commands Dictionary
         /// </summary>
-        /// <returns>True if command is successfully removed, False if command did not exist.</returns>
+        /// <returns>True if command is successfully removed, False if command did not exist</returns>
         public bool RemoveCommand(string command)
         {
             if (Commands.ContainsKey(command))
@@ -238,13 +240,13 @@ namespace Console
         }
 
         /// <summary>
-        /// Add a command from the Commands Dictionary.
+        /// Add a command from the Commands Dictionary
         /// </summary>
-        /// <param name="name">The capitalized name of the command.</param>
-        /// <param name="command">The command string used to invoke the command.</param>
-        /// <param name="method">The method to call when the command is invoked.</param>
-        /// <param name="helpText">The help text for the command.</param>
-        /// <returns>True/False if command is added successfully.</returns>
+        /// <param name="name">The capitalized name of the command</param>
+        /// <param name="command">The command string used to invoke the command</param>
+        /// <param name="method">The method to call when the command is invoked</param>
+        /// <param name="helpText">The help text for the command</param>
+        /// <returns>True/False if command is added successfully</returns>
         public static bool AddCommand(string name, string command, Func<string, string> method, string helpText = "")
         {
             if (Commands.ContainsKey(command))
@@ -320,9 +322,9 @@ namespace Console
         #region Utility Methods
 
         /// <summary>
-        /// Extract the command and any arguments given.
+        /// Extract the command and any arguments given
         /// </summary>
-        /// <returns>A list of arguments passed into the command.</returns>
+        /// <returns>A list of arguments passed into the command</returns>
         private static string ExtractArguments(string command, string rawCommand)
         {
             string arguments = (command.Length > rawCommand.Length) ? command.Substring(rawCommand.Length + 1, command.Length - (rawCommand.Length + 1)) : string.Empty;
@@ -330,7 +332,7 @@ namespace Console
         }
 
         /// <summary>
-        /// Sort all commands alphabetically in the dictionary (for help list).
+        /// Sort all commands alphabetically in the dictionary (for help list)
         /// </summary>
         private static void SortCommands()
         {
@@ -357,7 +359,7 @@ namespace Console
         }
 
         /// <summary>
-        /// Rebuilds the output UI to account for log output (resizes the outputContentScrollRect height).
+        /// Rebuilds the output UI to account for log output (resizes the outputContentScrollRect height)
         /// </summary>
         public void RebuildOutputUI(RectTransform content, RectTransform parent, Scrollbar scrollbar, InputField inputField)
         {
@@ -386,7 +388,7 @@ namespace Console
     #region Printing & Output
 
     /// <summary>
-    /// A method to act on the onEndEdit event for an InputField in Unity, checks for "Submit" event and calls <see cref="TauCon.OnInput()."/>
+    /// A method to act on the onEndEdit event for an InputField in Unity, checks for "Submit" event and calls <see cref="TauCon.OnInput()"/>
     /// </summary>
     /// <param name="line"></param>
     private void OnEndEdit(string line)
@@ -398,9 +400,9 @@ namespace Console
         }
 
         /// <summary>
-        /// Called when text is to be appended to the output log.
+        /// Called when text is to be appended to the output log
         /// </summary>
-        /// <param name="line">The line to append to the output log.</param>
+        /// <param name="line">The line to append to the output log</param>
         private void OnOutput(string line)
         {
             if (Instance.AddNewlineOnOutput)
@@ -434,7 +436,7 @@ namespace Console
         }
 
         /// <summary>
-        /// Called when text has been submitted from the input field.
+        /// Called when text has been submitted from the input field
         /// </summary>
         private void OnInput()
         {
@@ -469,12 +471,12 @@ namespace Console
         }
 
         /// <summary>
-        /// Send text to listeners and return text.
+        /// Send text to listeners and return text
         /// </summary>
-        /// <remarks>Overrides MonoBehaviour's Print method.</remarks>
-        /// <param name="text">The string of text to send.</param>
-        /// /// <param name="color">A colour in hex format.</param>
-        /// <returns>Returns either an empty string if text is empty or the text given, optionally coloured.</returns>
+        /// <remarks>Overrides MonoBehaviour's Print method</remarks>
+        /// <param name="text">The string of text to send</param>
+        /// /// <param name="color">A colour in hex format</param>
+        /// <returns>Returns either an empty string if text is empty or the text given, optionally coloured</returns>
         public static string Print(string text, string color = null)
         {
             if (text == null)
@@ -520,19 +522,23 @@ namespace Console
         #region Initialization
 
         /// <summary>
-        /// Initialize custom fonts.
+        /// Initialize custom fonts
         /// </summary>
         private void InitCustomFonts()
         {
-            if (UseCustomFonts)
+            if (OutputTextFont != null)
             {
                 OutputLogText.font = OutputTextFont;
+            }
+
+            if (InputTextFont != null)
+            {
                 InputText.font = InputTextFont;
             }
         }
 
         /// <summary>
-        /// Initialize font sizes.
+        /// Initialize font sizes
         /// </summary>
         private void InitFontSizes()
         {
@@ -544,7 +550,7 @@ namespace Console
         }
 
         /// <summary>
-        /// Set all default log messages and their colors.
+        /// Set all default log messages and their colors
         /// </summary>
         private static void InitDefaultLogMessages()
         {
@@ -559,7 +565,7 @@ namespace Console
         }
 
         /// <summary>
-        /// Initialize all console options.
+        /// Initialize all console options
         /// </summary>
         private void InitConsoleOptions()
         {
@@ -569,7 +575,7 @@ namespace Console
         }
 
         /// <summary>
-        /// Initialize all GUI image color values and settings.
+        /// Initialize all GUI image color values and settings
         /// </summary>
         private void InitConsoleGUI()
         {
@@ -613,7 +619,7 @@ namespace Console
         }
 
         /// <summary>
-        /// Set console colours based on chosen colour variables.
+        /// Set console colours based on chosen colour variables
         /// </summary>
         private void SetConsoleColors(Color32 mainPanelColor, Color32 inputFieldColor, Color32 inputTextColor, Color32 closeButtonColor, Color32 caretColor)
         {
@@ -629,7 +635,7 @@ namespace Console
         #region Command History
 
         /// <summary>
-        /// Populate InputField with command history.
+        /// Populate InputField with command history
         /// </summary>
         private void FetchHistory(KeyCode key)
         {
