@@ -20,7 +20,7 @@ namespace Console.Cmd
         {
             string result = string.Empty;
 
-            foreach (string command in TauCon.Commands.Keys)
+            foreach (string command in Taucon.Commands.Keys)
             {
                 result += command + "\t";
             }

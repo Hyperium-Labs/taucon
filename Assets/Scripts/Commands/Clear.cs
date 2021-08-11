@@ -12,7 +12,7 @@ namespace Console.Cmd
     {
         public static string ClearLog(string param)
         {
-            TauCon.Instance.OutputLogText.text = "";
+            Taucon.Instance.OutputLogText.text = "";
             return null;
         }
     }

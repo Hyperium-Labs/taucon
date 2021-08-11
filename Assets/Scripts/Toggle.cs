@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Console
 {
 
-    [AddComponentMenu("Scripts/TauCon/TauConToggle")]
+    [AddComponentMenu("Baphomet Labs/TauCon/TauConToggle")]
     /// <summary>
     /// This script must be attached to a separate (ALWAYS ACTIVE) GameObject
     /// </summary>
@@ -17,7 +17,7 @@ namespace Console
         // Default "Console"
         // TODO(Turbits): Get the value of Input button "Console" positive button and pass it here?...might not be possible with default InputManager in Unity
         // TODO (Turbits): 2021 - added to masterplan - with the new input manager i should look to see if i can refactor this into being much easier, something like creating the input and assigning it a button programmatically.
-        // i should also bring in the button here so that i can remove any added characters from the button if they get added to the input field accidentally
+        // i should also bring in the input here so that i can remove any added characters from the button if they get added to the input field accidentally without checking for "`" and so that i can add a custom prop to change the toggle key
         // maybe also some error checking to make sure that the button assigned isn't alphanumeric?
         public string toggleInput = "Console";
         
@@ -27,8 +27,8 @@ namespace Console
 
         private void Start()
         {
-            inputField = TauCon.Instance.InputField;
-            tauCon = TauCon.Instance.Canvas.gameObject;
+            inputField = Taucon.Instance.InputField;
+            tauCon = Taucon.Instance.Canvas.gameObject;
             tauCon.SetActive(false);
         }
 
@@ -45,19 +45,19 @@ namespace Console
                 // Remove any added characters from the toggleCommand string
                 if (tauCon.activeSelf)
                 {
-                    if (inputField.text.Contains("`"))
+                    if (inputField.text.EndsWith("`"))
                     {
-                        inputField.text = inputField.text.Replace("`", "");
+                        inputField.text = inputField.text[inputField.text.Length-1].ToString().Replace("`", "");
                     }
                 }
 
-                if (!TauCon.Instance.RefocusConsoleOnSubmit)
+                if (!Taucon.Instance.RefocusConsoleOnSubmit)
                 {
-                    StartCoroutine(TauCon.CaretToPosition(inputField, inputField.text.Length));
+                    StartCoroutine(Taucon.CaretToPosition(inputField, inputField.text.Length));
                 }
 
-                TauCon.Instance.InputField.Select();
-                TauCon.Instance.InputField.ActivateInputField();
+                Taucon.Instance.InputField.Select();
+                Taucon.Instance.InputField.ActivateInputField();
             }
         }
     }

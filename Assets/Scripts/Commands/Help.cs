@@ -15,13 +15,13 @@ namespace Console.Cmd
                 return "Type 'help <command>' for help with a specific command.";
             }
 
-            if (!TauCon.Commands.ContainsKey(param))
+            if (!Taucon.Commands.ContainsKey(param))
             {
-                return $"{TauCon.LOGCMDINVALID + param}";
+                return $"{Taucon.LOGCMDINVALID + param}";
             }
-            else if (TauCon.Commands.ContainsKey(param))
+            else if (Taucon.Commands.ContainsKey(param))
             {
-                Command command = TauCon.Commands[param];
+                Command command = Taucon.Commands[param];
                 if (command.helpText == string.Empty)
                 {
                     return $"{param} does not have help text.";
@@ -30,7 +30,7 @@ namespace Console.Cmd
             }
             else
             {
-                return $"{TauCon.LOGERROR} + Unspecified";
+                return $"{Taucon.LOGERROR} + Unspecified";
             }
         }
     }
