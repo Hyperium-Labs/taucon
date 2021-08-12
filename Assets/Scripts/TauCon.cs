@@ -9,15 +9,13 @@ using Console.Cmd;
 namespace Console
 {
 
-    [AddComponentMenu("Scripts/Taucon/Console")]
+    [AddComponentMenu("Baphomet Labs/Taucon/Console")]
     /// <summary>
     /// This script must be attached to the main TauCon Canvas
     /// Default UI Element Name: Console
     /// </summary>
-    public class TauCon : MonoBehaviour
+    public class Taucon : MonoBehaviour
     {
-
-        #region Theme Enums
 
         public enum PrimaryColorTheme
         {
@@ -25,9 +23,7 @@ namespace Console
             Light
         }
 
-        #endregion
-
-        #region User Variables
+#region User Variables
 
         [Header("UI Components")]
         public Canvas Canvas;
@@ -67,13 +63,13 @@ namespace Console
         public int OutputTextFontSize = 14;
         public int InputTextFontSize = 14;
 
-        #endregion
+#endregion
 
-        public static Color32 LogDefaultColor;
-        public static Color32 LogAssertColor;
-        public static Color32 LogWarningColor;
-        public static Color32 LogErrorColor;
-        public static Color32 LogExceptionColor;
+        private static Color32 LogDefaultColor;
+        private static Color32 LogAssertColor;
+        private static Color32 LogWarningColor;
+        private static Color32 LogErrorColor;
+        private static Color32 LogExceptionColor;
 
         public static string LogDefaultColorHex;
         public static string LogAssertColorHex;
@@ -99,16 +95,16 @@ namespace Console
 
         private Vector2 _outputContentReset = new Vector2(0f, 0f);
 
-        public static TauCon Instance;
+        public static Taucon Instance;
         public static Dictionary<string, Command> Commands = new Dictionary<string, Command>();
         public static List<string> CommandHistory = new List<string>();
         public static List<string> LogHistory = new List<string>();
         public delegate void ConsoleListener(string line);
         public static event ConsoleListener OnOutputEvent;
 
-        static TauCon() { }
+        static Taucon() { }
 
-        #region Unity Callbacks
+#region Unity Callbacks
 
         private void Awake()
         {
@@ -130,7 +126,7 @@ namespace Console
             OnOutputEvent += OnOutput;
             if (OutputUnityLog)
             {
-                Application.logMessageReceived += new Application.LogCallback(this.HandleUnityLog);
+                Application.logMessageReceived += new Application.LogCallback(HandleUnityLog);
             }
 
             _currentLogHistoryIndex = -1;
@@ -178,36 +174,36 @@ namespace Console
             }
         }
 
-        #endregion
+#endregion
 
-        #region Warn Logging
+#region Warn Logging
 
-        private void HandleUnityLog(string logString, string trace, LogType logType)
+        private static void HandleUnityLog(string logString, string trace, LogType logType)
         {
             string output = String.Empty;
-            string color = String.Empty;
+            Color32 color = default(Color32);
 
             switch (logType)
             {
                 case LogType.Error:
                     output += LOGERROR;
-                    color = LogErrorColorHex;
+                    color = LogErrorColor;
                     break;
                 case LogType.Assert:
                     output += LOGASSERT;
-                    color = LogAssertColorHex;
+                    color = LogAssertColor;
                     break;
                 case LogType.Warning:
                     output += LOGWARNING;
-                    color = LogWarningColorHex;
+                    color = LogWarningColor;
                     break;
                 case LogType.Log:
                     output += LOGDEFAULT;
-                    color = LogDefaultColorHex;
+                    color = LogDefaultColor;
                     break;
                 case LogType.Exception:
                     output += LOGEXCEPTION;
-                    color = LogExceptionColorHex;
+                    color = LogExceptionColor;
                     break;
                 default:
                     return;
@@ -217,9 +213,9 @@ namespace Console
             Print(output, color);
         }
 
-        #endregion
+#endregion
 
-        #region Adding & Removing ConsoleCommands
+#region Adding & Removing ConsoleCommands
 
         /// <summary>
         /// Removes a command from the Commands Dictionary
@@ -263,9 +259,9 @@ namespace Console
             return true;
         }
 
-        #endregion
+#endregion
 
-        #region Command Eval
+#region Command Eval
 
         /// <summary>
         /// Evaluate given string (execute command)
@@ -274,19 +270,8 @@ namespace Console
         {
             string output = string.Empty;
 
-            Print(command);
-
-            if (string.IsNullOrEmpty(command))
-            {
-                if (Instance.OutputUnityLog)
-                {
-                    Debug.LogError(LOGCMDINVALID + command);
-                }
-                output = LOGCMDINVALID + command;
-                return Print(output);
-            }
-
             command.ToLower();
+            Print(command, LogDefaultColor);
 
             string[] parsedCommand = command.Split(' ');
             string rawCommand = parsedCommand[0];
@@ -301,7 +286,7 @@ namespace Console
                     Debug.LogError(LOGCMDINVALID + rawCommand);
                 }
                 output = LOGCMDNOTFOUND + rawCommand;
-                return Print(output);
+                return Print(output, LogDefaultColor);
             }
 
             string parameters = ExtractArguments(command, rawCommand);
@@ -314,12 +299,13 @@ namespace Console
 
             _currentLogHistoryIndex = -1;
 
-            return Print(output);
+            SendOutputToListeners(output);
+            return Print(output, LogDefaultColor);
         }
 
-        #endregion
+#endregion
 
-        #region Utility Methods
+#region Utility Methods
 
         /// <summary>
         /// Extract the command and any arguments given
@@ -355,7 +341,7 @@ namespace Console
             inputField.caretPosition = position;
             inputField.selectionColor = _initialInputSelectionColor;
             inputField.caretColor = _initialCaretColor;
-            inputField.Rebuild(CanvasUpdate.PreRender);
+            //inputField.Rebuild(CanvasUpdate.PreRender);
         }
 
         /// <summary>
@@ -363,41 +349,39 @@ namespace Console
         /// </summary>
         public void RebuildOutputUI(RectTransform content, RectTransform parent, Scrollbar scrollbar, InputField inputField)
         {
-            // Rebuild content RT
             content.GetComponent<RectTransform>().anchoredPosition = parent.position;
             content.anchorMin = new Vector2(0f, 0f);
             content.anchorMax = new Vector2(1f, 1f);
             content.offsetMin = _outputContentReset;
             content.offsetMax = _outputContentReset;
             content.transform.SetParent(parent);
-
-            // Rebuild scrollbar
             scrollbar.Rebuild(CanvasUpdate.Prelayout);
-
-            // Rebuild InputField
             inputField.Rebuild(CanvasUpdate.PreRender);
         }
 
+        /// <summary>
+        /// Takes a Color32 and converts it to a hex, brought to you by StackOverflow
+        /// </summary>
+        /// <returns>A color hex string</returns>
         private static string ColorToHex(Color32 color) {
             Color32 color32 = color;
-            return String.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", color32.r, color32.g, color32.b, color32.a);
+            return String.Format("{0:X2}{1:X2}{2:X2}{3:X2}", color32.r, color32.g, color32.b, color32.a);
         }
 
-    #endregion
+#endregion
 
-    #region Printing & Output
+#region Printing & Output
 
-    /// <summary>
-    /// A method to act on the onEndEdit event for an InputField in Unity, checks for "Submit" event and calls <see cref="TauCon.OnInput()"/>
-    /// </summary>
-    /// <param name="line"></param>
-    private void OnEndEdit(string line)
-        {
-            if (Input.GetButtonDown("Submit"))
+        /// <summary>
+        /// A method to act on the onEndEdit event for an InputField in Unity, checks for "Submit" event and calls <see cref="Taucon.OnInput()"/>
+        /// </summary>
+        private void OnEndEdit(string line)
             {
-                OnInput();
+                if (Input.GetButtonDown("Submit"))
+                {
+                    OnInput();
+                }
             }
-        }
 
         /// <summary>
         /// Called when text is to be appended to the output log
@@ -405,12 +389,9 @@ namespace Console
         /// <param name="line">The line to append to the output log</param>
         private void OnOutput(string line)
         {
-            if (Instance.AddNewlineOnOutput)
-            {
-                line += "\n";
-            }
-
             LogHistory.Insert(0, line);
+
+            //OutputLogText.text += line;
 
             if (LogHistory.Count >= MaxLines)
             {
@@ -425,12 +406,6 @@ namespace Console
                 }
             }
 
-            // REMOVE
-            if (Instance.OutputUnityLog)
-            {
-                Debug.Log(string.Join(", ", LogHistory.ToArray()));
-            }
-
             OutputLogText.text += line;
             RebuildOutputUI(OutputContent, OutputViewport, Scrollbar, InputField);
         }
@@ -438,12 +413,19 @@ namespace Console
         /// <summary>
         /// Called when text has been submitted from the input field
         /// </summary>
-        private void OnInput()
+        private string OnInput()
         {
-            string command = InputField.text;
-            if (string.IsNullOrEmpty(command))
+            string input = InputField.text;
+            string output = string.Empty;
+
+            if (string.IsNullOrEmpty(input))
             {
-                return;
+                if (Instance.OutputUnityLog)
+                {
+                    Debug.LogError(LOGCMDINVALID + input);
+                }
+                output = LOGCMDINVALID + input;
+                return Print(output, LogDefaultColor);
             }
 
             if (ClearInputFieldOnSubmit)
@@ -457,8 +439,8 @@ namespace Console
                 InputField.ActivateInputField();
             }
 
-            Eval(command);
             RebuildOutputUI(OutputContent, OutputViewport, Scrollbar, InputField);
+            return Eval(input);
         }
 
         private static string SendOutputToListeners(string output)
@@ -477,34 +459,22 @@ namespace Console
         /// <param name="text">The string of text to send</param>
         /// /// <param name="color">A colour in hex format</param>
         /// <returns>Returns either an empty string if text is empty or the text given, optionally coloured</returns>
-        public static string Print(string text, string color = null)
+        public static string Print(string text, Color32 color = default(Color32))
         {
-            if (text == null)
+            Debug.Log(default(Color32));
+            if (text == string.Empty)
             {
                 return String.Empty;
             }
 
-            // If allowEmptyOutput is false, do not send to listeners
-            if (Instance.AllowEmptyOutput && text == string.Empty)
-            {
-                return String.Empty;
-            }
-
-            SendOutputToListeners(text);
-
-            if (color == null)
-            {
-                return "<color=#" + LogDefaultColorHex + ">" + text + "</color>";
-            }
-            else
-            {
-                return "<color=#" + color + ">" + text + "</color>";
-            }
+            Debug.Log(color);
+            Debug.Log($"<color=#{color}>{text}</color>");
+            return $"<color=#{ColorToHex(color)}>{text}</color>";
         }
 
-        #endregion
+#endregion
 
-        #region Built-in Console Commands
+#region Initialization
 
         /// <summary>
         /// Initialize default commands.
@@ -516,10 +486,6 @@ namespace Console
             AddCommand("Clear", "clear", Clear.ClearLog, "Clears the console of all text");
             AddCommand("Commands", "commands", Cmd.Commands.ListCommands, "Lists all available commands");
         }
-
-        #endregion
-
-        #region Initialization
 
         /// <summary>
         /// Initialize custom fonts
@@ -554,14 +520,14 @@ namespace Console
         /// </summary>
         private static void InitDefaultLogMessages()
         {
-            LOGCMDINVALID = Print("Command invalid: ", LogExceptionColorHex);
-            LOGCMDNOTFOUND = Print("Command unrecognized: ", LogExceptionColorHex);
-            LOGCMDEXIST = Print("Command already exists: ", LogExceptionColorHex);
-            LOGERROR = Print("Error: ", LogErrorColorHex);
-            LOGWARNING = Print("Warning: ", LogWarningColorHex);
-            LOGDEFAULT = Print("Log: ", LogDefaultColorHex);
-            LOGEXCEPTION = Print("Exception: ", LogExceptionColorHex);
-            LOGASSERT = Print("Assert: ", LogAssertColorHex);
+            LOGCMDINVALID = Print("Command invalid: ", LogExceptionColor);
+            LOGCMDNOTFOUND = Print("Command unrecognized: ", LogExceptionColor);
+            LOGCMDEXIST = Print("Command already exists: ", LogExceptionColor);
+            LOGERROR = Print("Error: ", LogErrorColor);
+            LOGWARNING = Print("Warning: ", LogWarningColor);
+            LOGDEFAULT = Print("Log: ", LogDefaultColor);
+            LOGEXCEPTION = Print("Exception: ", LogExceptionColor);
+            LOGASSERT = Print("Assert: ", LogAssertColor);
         }
 
         /// <summary>
@@ -601,6 +567,7 @@ namespace Console
                         new Color32(43, 43, 43, 255),
                         new Color32(66, 63, 62, 255),
                         new Color32(245, 244, 244, 255),
+                        new Color32(245, 244, 244, 255),
                         new Color32(233, 133, 128, 255),
                         new Color32(245, 244, 244, 255));
                     LogDefaultColor = new Color32(245, 244, 244, 255);
@@ -610,41 +577,44 @@ namespace Console
                         new Color32(245, 244, 244, 255),
                         new Color32(225, 225, 225, 255),
                         new Color32(43, 43, 43, 255),
+                        new Color32(43, 43, 43, 255),
                         new Color32(233, 133, 128, 255),
                         new Color32(43, 43, 43, 255));
                     LogDefaultColor = new Color32(43, 43, 43, 255);
                     break;
-
             }
         }
 
         /// <summary>
         /// Set console colours based on chosen colour variables
         /// </summary>
-        private void SetConsoleColors(Color32 mainPanelColor, Color32 inputFieldColor, Color32 inputTextColor, Color32 closeButtonColor, Color32 caretColor)
+        private void SetConsoleColors(Color32 mainPanelColor, Color32 inputFieldColor, Color32 inputTextColor, Color32 outputTextColor, Color32 closeButtonColor, Color32 caretColor)
         {
             MainPanel.GetComponent<Image>().color = mainPanelColor;
             InputField.GetComponent<Image>().color = inputFieldColor;
             InputText.color = inputTextColor;
             CloseButton.GetComponent<Image>().color = closeButtonColor;
             InputField.caretColor = caretColor;
+            OutputLogText.color = outputTextColor;
         }
 
-        #endregion
+#endregion
 
-        #region Command History
+#region Command History
 
         /// <summary>
         /// Populate InputField with command history
         /// </summary>
         private void FetchHistory(KeyCode key)
         {
-            switch(key)
+            Debug.Log($"Current History Index:\t{_currentLogHistoryIndex}");
+            Debug.Log($"History List:\n{CommandHistory}");
+            switch (key)
             {
                 case KeyCode.UpArrow:
                     if (_currentLogHistoryIndex < 0)
                     {
-                        _currentLogHistoryIndex += 1;
+                        _currentLogHistoryIndex++;
                         InputField.text = CommandHistory[_currentLogHistoryIndex];
                         break;
                     }
@@ -655,7 +625,7 @@ namespace Console
                     }
                     else
                     {
-                        _currentLogHistoryIndex += 1;
+                        _currentLogHistoryIndex++;
                         InputField.text = CommandHistory.ElementAt(_currentLogHistoryIndex);
                         break;
                     }
@@ -669,7 +639,7 @@ namespace Console
                     }
                     else
                     {
-                        _currentLogHistoryIndex -= 1;
+                        _currentLogHistoryIndex--;
                         InputField.text = CommandHistory.ElementAt(_currentLogHistoryIndex);
                         StartCoroutine(CaretToPosition(InputField, 0));
                         break;
@@ -677,6 +647,6 @@ namespace Console
             }
         }
 
-        #endregion
+#endregion
     }
 }

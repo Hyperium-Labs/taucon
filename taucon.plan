@@ -4,8 +4,8 @@
   "BoardIndex": 0,
   "BoardCount": 1,
   "AutoSave": true,
-  "Pan.X": -153.69921875,
-  "Pan.Y": -186.38037109375,
+  "Pan.X": -173.5414276123047,
+  "Pan.Y": -239.5284423828125,
   "ZoomLevel": 4,
   "TaskTransparency": 5,
   "OutlineTasks": true,
@@ -159,7 +159,7 @@
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Bug: toggling console with RefocusConsoleOnSubmit checked does not focus console\n\n- with it checked: does not focus console,\n focuses on input submit\n- with in unchecked: focuses console,\ndoes not refocus on input submit",
-      "Selected": true,
+      "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 13:10:50"
     }, 
@@ -195,7 +195,7 @@
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Bug: Output is not coloured properly\n\nRework OnOutput() functionality? Its weird\n\npossibly non-\"Print()\"ed text, all text should\nbe hitting this method to be printed.\nexception is debug log",
-      "Selected": false,
+      "Selected": true,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 14:59:15"
     }, 
@@ -210,6 +210,18 @@
       "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 15:39:11"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 16,
+      "Position.Y": 272,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Bug: Command not printed before command output",
+      "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 12 2021 12:39:24"
     }
   ]
 }
