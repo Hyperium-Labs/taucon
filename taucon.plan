@@ -94,7 +94,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 192,
+      "Position.Y": 208,
       "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -149,12 +149,13 @@
       "Description": "Refactor history log; remove/readd\n\nCurrently checking for existing commands in\nhistory and removing/readding them. Thats\nnot how any CLI i've used works, remove that",
       "Selected": false,
       "TaskType.CurrentChoice": 0,
-      "CreationTime": "Aug 8 2021 12:06:59"
+      "CreationTime": "Aug 8 2021 12:06:59",
+      "CompletionTime": "Aug 15 2021 21:58:31"
     }, 
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 208,
+      "Position.Y": 224,
       "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -166,7 +167,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 0,
-      "Position.Y": 176,
+      "Position.Y": 192,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -178,8 +179,8 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 240,
-      "Checkbox.Checked": false,
+      "Position.Y": 256,
+      "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Bug: Exit command throws NullReferenceException",
@@ -190,19 +191,19 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 224,
-      "Checkbox.Checked": false,
+      "Position.Y": 240,
+      "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Bug: Output is not coloured properly\n\nRework OnOutput() functionality? Its weird\n\npossibly non-\"Print()\"ed text, all text should\nbe hitting this method to be printed.\nexception is debug log",
-      "Selected": true,
+      "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 8 2021 14:59:15"
     }, 
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 256,
+      "Position.Y": 272,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -214,14 +215,38 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 272,
+      "Position.Y": 288,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Bug: Command not printed before command output",
-      "Selected": false,
+      "Selected": true,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 12 2021 12:39:24"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 16,
+      "Position.Y": 304,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Command history slightly off?\n\nif using the history and select something other\nthan the most recent, the command that should be\nabove it is below it?",
+      "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 15 2021 21:55:24"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 0,
+      "Position.Y": 176,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Rewrite command history/log to not be stupid\n\nI can't read the current iteration lol",
+      "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 15 2021 21:58:02"
     }
   ]
 }

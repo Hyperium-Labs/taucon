@@ -10,7 +10,7 @@ namespace Console.Cmd
     {
         public static string ExitConsole(string param)
         {
-            GameObject.Find("TauCon Canvas").SetActive(false);
+            GameObject.Find("Console").SetActive(false);
             return null;
         }
     }
