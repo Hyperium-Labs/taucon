@@ -2,10 +2,10 @@
   "Version": "0.7.2",
   "LockProject": false,
   "BoardIndex": 0,
-  "BoardCount": 1,
+  "BoardCount": 2,
   "AutoSave": true,
-  "Pan.X": -173.5414276123047,
-  "Pan.Y": -239.5284423828125,
+  "Pan.X": -161.63043212890625,
+  "Pan.Y": -245.40200805664062,
   "ZoomLevel": 4,
   "TaskTransparency": 5,
   "OutlineTasks": true,
@@ -29,7 +29,7 @@
   "DeadlineAnimation": 0,
   "TableColumnsRotatedVertical": false,
   "TableColumnVerticalSpacing": 60,
-  "BoardNames": ["2021 Refactor"],
+  "BoardNames": ["2021 Refactor", "2021 Redesign"],
   "Tasks": [
     {
       "BoardIndex": 0,
@@ -94,7 +94,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 208,
+      "Position.Y": 192,
       "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -129,8 +129,8 @@
     }, 
     {
       "BoardIndex": 0,
-      "Position.X": 0,
-      "Position.Y": 144,
+      "Position.X": 64,
+      "Position.Y": 80,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -142,7 +142,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 0,
-      "Position.Y": 160,
+      "Position.Y": 144,
       "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -155,7 +155,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 224,
+      "Position.Y": 208,
       "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -167,7 +167,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 0,
-      "Position.Y": 192,
+      "Position.Y": 176,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -179,7 +179,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 256,
+      "Position.Y": 240,
       "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -191,7 +191,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 240,
+      "Position.Y": 224,
       "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -203,7 +203,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 272,
+      "Position.Y": 256,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -215,8 +215,8 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 288,
-      "Checkbox.Checked": false,
+      "Position.Y": 272,
+      "Checkbox.Checked": true,
       "Progression.Current": 0,
       "Progression.Max": 0,
       "Description": "Bug: Command not printed before command output",
@@ -227,11 +227,11 @@
     {
       "BoardIndex": 0,
       "Position.X": 16,
-      "Position.Y": 304,
+      "Position.Y": 288,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
-      "Description": "Command history slightly off?\n\nif using the history and select something other\nthan the most recent, the command that should be\nabove it is below it?",
+      "Description": "Bug: Command history slightly off?\n\nif using the history and select something other\nthan the most recent, the command that should be\nabove it is below it?",
       "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 15 2021 21:55:24"
@@ -239,7 +239,7 @@
     {
       "BoardIndex": 0,
       "Position.X": 0,
-      "Position.Y": 176,
+      "Position.Y": 160,
       "Checkbox.Checked": false,
       "Progression.Current": 0,
       "Progression.Max": 0,
@@ -247,6 +247,18 @@
       "Selected": false,
       "TaskType.CurrentChoice": 0,
       "CreationTime": "Aug 15 2021 21:58:02"
+    }, 
+    {
+      "BoardIndex": 1,
+      "Position.X": 0,
+      "Position.Y": 16,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Design \u0026 export new close button\n\nits just a circle",
+      "Selected": false,
+      "TaskType.CurrentChoice": 0,
+      "CreationTime": "Aug 8 2021 11:48:32"
     }
   ]
 }
