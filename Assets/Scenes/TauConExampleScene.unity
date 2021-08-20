@@ -498,11 +498,12 @@ MonoBehaviour:
   InputCharacterLimit: 60
   CaretBlinkRate: 1
   CaretWidth: 8
+  CommandOutputMarker: '> '
+  LogOutputMarker: 
   ClearInputFieldOnSubmit: 1
   RefocusConsoleOnSubmit: 1
   OutputUnityLog: 0
   OutputStackTrace: 0
-  AllowEmptyOutput: 1
   AddNewlineOnOutput: 1
   UseCustomFonts: 0
   UseCustomFontSizes: 0

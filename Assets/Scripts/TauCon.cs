@@ -44,7 +44,7 @@ namespace Console
         public int InputCharacterLimit = 60;
         public float CaretBlinkRate = 1f;
         public int CaretWidth = 8;
-        public string CommandOutputMarker = ">";
+        public string CommandOutputMarker = "";
         public string LogOutputMarker = "";
         public bool ClearInputFieldOnSubmit = true;
         public bool RefocusConsoleOnSubmit = true;
@@ -55,9 +55,9 @@ namespace Console
         public bool UseCustomFontSizes = false;
 
         [Header("Custom Fonts")]
-        [Tooltip("Using this will override the default Roboto Mono font.")]
+        [Tooltip("Using this will override the default font.")]
         public Font OutputTextFont;
-        [Tooltip("Using this will override the default Roboto Mono font.")]
+        [Tooltip("Using this will override the default font.")]
         public Font InputTextFont;
 
         [Header("Custom Font Sizes")]
@@ -238,8 +238,6 @@ namespace Console
             Command consoleCommand = new Command(name, command, method, helpText);
             Commands.Add(command, consoleCommand);
 
-            SortCommands();
-
             return true;
         }
 
@@ -255,14 +253,6 @@ namespace Console
         {
             string arguments = (command.Length > rawCommand.Length) ? command.Substring(rawCommand.Length + 1, command.Length - (rawCommand.Length + 1)) : string.Empty;
             return arguments.Trim();
-        }
-
-        /// <summary>
-        /// Sort all commands alphabetically in the dictionary (for help list)
-        /// </summary>
-        private static void SortCommands()
-        {
-            Commands = Commands.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
         }
 
         /// <summary>
@@ -351,7 +341,6 @@ namespace Console
         {
             string output = string.Empty;
 
-            // print it right out
             command.ToLower();
             Print($"{Instance.CommandOutputMarker}{command}", LogDefaultColor);
 
@@ -361,7 +350,6 @@ namespace Console
 
             CommandHistory.Insert(0, trimmedCommand);
 
-            // if the command doesnt exist, return
             if (!Commands.ContainsKey(rawCommand))
             {
                 Debug.Log($"LOGCMDNOTFOUND: {LOGCMDNOTFOUND}" +
@@ -371,13 +359,11 @@ namespace Console
                 return Print(output, LogDefaultColor);
             }
 
-            // if the command is empty, return
             if (command == string.Empty)
             {
                 return Print(String.Empty, LogDefaultColor);
             }
 
-            // keep track of log count
             LogHistory.Insert(0, command);
             if (LogHistory.Count >= Instance.MaxLines)
             {
