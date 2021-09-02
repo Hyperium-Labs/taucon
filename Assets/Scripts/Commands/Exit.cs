@@ -10,8 +10,16 @@ namespace Console.Cmd
     {
         public static string ExitConsole(string param)
         {
-            GameObject.Find("Console").SetActive(false);
-            return null;
+            try
+            {
+                GameObject.FindWithTag("Taucon").SetActive(false);
+                Clear.ClearLog(null);
+                return null;
+            } catch
+            {
+                return "Couldn't find the console, does the Taucon canvas object have the 'Taucon' tag?";
+            }
+            
         }
     }
 }

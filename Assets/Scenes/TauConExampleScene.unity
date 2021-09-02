@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -470,47 +470,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!114 &1882459552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7813404899087819451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 333d4fef833014aecae7540c1700ad07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Canvas: {fileID: 7813404899087819430}
-  MainPanel: {fileID: 7813404898664278403}
-  OutputLogScrollRect: {fileID: 7813404899630720083}
-  OutputViewport: {fileID: 7813404899620212359}
-  OutputContent: {fileID: 7813404899508749334}
-  OutputLogText: {fileID: 7813404899338485491}
-  InputField: {fileID: 7813404899804559290}
-  InputText: {fileID: 7813404899118873477}
-  Scrollbar: {fileID: 7813404898534035474}
-  ScrollbarHandle: {fileID: 7813404898261457357}
-  CloseButton: {fileID: 7813404899058564970}
-  ColorTheme: 0
-  MaxLines: 5000
-  InputCharacterLimit: 60
-  CaretBlinkRate: 1
-  CaretWidth: 8
-  CommandOutputMarker: '> '
-  LogOutputMarker: 
-  ClearInputFieldOnSubmit: 1
-  RefocusConsoleOnSubmit: 1
-  OutputUnityLog: 0
-  OutputStackTrace: 0
-  AddNewlineOnOutput: 1
-  UseCustomFonts: 0
-  UseCustomFontSizes: 0
-  OutputTextFont: {fileID: 0}
-  InputTextFont: {fileID: 0}
-  OutputTextFontSize: 14
-  InputTextFontSize: 14
 --- !u!222 &7813404898119970729
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -858,7 +817,7 @@ GameObject:
   - component: {fileID: 7813404898504235827}
   - component: {fileID: 7813404898504235828}
   m_Layer: 5
-  m_Name: TauCon
+  m_Name: Main Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1180,7 +1139,7 @@ GameObject:
   - component: {fileID: 7813404899058564969}
   - component: {fileID: 7813404899058564970}
   m_Layer: 5
-  m_Name: CloseConsoleButton
+  m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1279,14 +1238,55 @@ GameObject:
   - component: {fileID: 7813404899087819430}
   - component: {fileID: 7813404899087819431}
   - component: {fileID: 7813404899087819448}
-  - component: {fileID: 1882459552}
+  - component: {fileID: 7813404899087819452}
   m_Layer: 5
-  m_Name: Console
-  m_TagString: Untagged
+  m_Name: Canvas
+  m_TagString: Taucon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7813404899087819452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813404899087819451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 333d4fef833014aecae7540c1700ad07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Canvas: {fileID: 7813404899087819430}
+  MainPanel: {fileID: 7813404898504235830}
+  OutputLogScrollRect: {fileID: 7813404899630720083}
+  OutputViewport: {fileID: 7813404899620212359}
+  OutputContent: {fileID: 7813404899508749334}
+  OutputLogText: {fileID: 7813404899338485491}
+  InputField: {fileID: 7813404899804559290}
+  InputText: {fileID: 7813404899118873477}
+  Scrollbar: {fileID: 7813404898534035474}
+  ScrollbarHandle: {fileID: 7813404898261457357}
+  CloseButton: {fileID: 7813404899058564970}
+  ColorTheme: 0
+  MaxLines: 5000
+  InputCharacterLimit: 60
+  CaretBlinkRate: 1
+  CaretWidth: 8
+  CommandOutputMarker: 
+  LogOutputMarker: 
+  ClearInputFieldOnSubmit: 1
+  RefocusConsoleOnSubmit: 1
+  OutputUnityLog: 0
+  OutputStackTrace: 0
+  AddNewlineOnOutput: 1
+  UseCustomFonts: 0
+  UseCustomFontSizes: 0
+  OutputTextFont: {fileID: 0}
+  InputTextFont: {fileID: 0}
+  OutputTextFontSize: 14
+  InputTextFontSize: 14
 --- !u!224 &7813404899097965827
 RectTransform:
   m_ObjectHideFlags: 0
