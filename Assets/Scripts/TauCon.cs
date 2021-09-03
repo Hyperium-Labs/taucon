@@ -80,7 +80,7 @@ namespace Console
 
         private static Color32 _initialInputSelectionColor;
         private static Color32 _initialCaretColor;
-        private static int _currentLogHistoryIndex;
+        private static int? _currentLogHistoryIndex;
         #pragma warning disable
         private float _outputContentHeight;
         #pragma warning enable
@@ -135,10 +135,7 @@ namespace Console
             OutputLogText.text = string.Empty;
         }
 
-        /// <summary>
-        /// Called every frame, but update interval times will vary depending on FPS
-        /// </summary>
-        private void Update()
+        private void LateUpdate()
         {
             // Check for active console and 'return' event for command input
             if (Canvas.gameObject.activeInHierarchy)
@@ -376,7 +373,7 @@ namespace Console
                     Instance.OutputLogText.text += LogHistory[i];
                 }
             }
-            //_currentLogHistoryIndex = -1;
+            _currentLogHistoryIndex = -1;
 
             string parameters = ExtractArguments(command, rawCommand);
             // generate output based on the method of the command
@@ -528,42 +525,80 @@ namespace Console
         {
             Debug.Log($"Current History Index:\t{_currentLogHistoryIndex}");
             Debug.Log($"History List:\n{CommandHistory}");
+
             switch (key)
             {
                 case KeyCode.UpArrow:
-                    if (_currentLogHistoryIndex < 0)
-                    {
-                        _currentLogHistoryIndex++;
-                        InputField.text = CommandHistory[_currentLogHistoryIndex];
-                        break;
-                    }
-                    else if (_currentLogHistoryIndex == CommandHistory.Count - 1)
-                    {
-                        InputField.text = CommandHistory[CommandHistory.Count - 1];
-                        break;
-                    }
-                    else
-                    {
-                        _currentLogHistoryIndex++;
-                        InputField.text = CommandHistory.ElementAt(_currentLogHistoryIndex);
-                        break;
-                    }
+                    // check for last item and dont increment if at last element
+                    // check if were at the first index (0), if so DONT increment, but populate the field with the text from that index of the commadn history
+                    // check if existing commands are even in history (and dont move indexs if there arent)
+                    // otherwise increment
+                    break;
+
                 case KeyCode.DownArrow:
-                    if (_currentLogHistoryIndex <= 0)
-                    {
-                        _currentLogHistoryIndex = -1;
-                        InputField.text = "";
-                        StartCoroutine(CaretToPosition(InputField, InputField.text.Length));
-                        break;
-                    }
-                    else
-                    {
-                        _currentLogHistoryIndex--;
-                        InputField.text = CommandHistory.ElementAt(_currentLogHistoryIndex);
-                        StartCoroutine(CaretToPosition(InputField, 0));
-                        break;
-                    }
+                    // check for first item and dont decrement if at last element; also clear input field; also set 
+                    // else decrement
+                    break;
             }
+
+
+
+
+            //switch (key)
+            //{
+            //    case KeyCode.UpArrow:
+            //        // if were at the default position index && there ARE commands in the history
+            //        if (_currentLogHistoryIndex == 0 && CommandHistory.Count > 0)
+            //        {
+            //            // and populate the input field with the command from that index of the history
+            //            InputField.text = CommandHistory[(int)_currentLogHistoryIndex];
+            //            StartCoroutine(CaretToPosition(InputField, CommandHistory.ElementAt((int)_currentLogHistoryIndex).Length));
+            //            break;
+            //        }
+            //        else if (_currentLogHistoryIndex >= 1)
+            //        {
+            //            // increment our index in the history
+            //            _currentLogHistoryIndex++;
+            //            // and populate the input field with the command from that index of the history
+            //            InputField.text = CommandHistory[(int)_currentLogHistoryIndex];
+            //            StartCoroutine(CaretToPosition(InputField, CommandHistory.ElementAt((int)_currentLogHistoryIndex).Length));
+            //            break;
+            //        }
+            //        // if were at the last element of the history and we try to increment our index,
+            //        // set the text to the last element in the history (so no overflow)
+            //        else if (_currentLogHistoryIndex == CommandHistory.Count - 1)
+            //        {
+            //            InputField.text = CommandHistory[CommandHistory.Count - 1];
+            //            StartCoroutine(CaretToPosition(InputField, CommandHistory.ElementAt((int)_currentLogHistoryIndex).Length));
+            //            break;
+            //        }
+            //        else
+            //        {
+            //            _currentLogHistoryIndex++;
+            //            InputField.text = CommandHistory.ElementAt((int)_currentLogHistoryIndex);
+            //            // set the caret to the end of the element in the incremented index position
+            //            StartCoroutine(CaretToPosition(InputField, CommandHistory.ElementAt((int)_currentLogHistoryIndex).Length));
+            //            break;
+            //        }
+            //    case KeyCode.DownArrow:
+            //        // if were at the first element in the history
+            //        // and we try to decrement our index,
+            //        if (_currentLogHistoryIndex == 0)
+            //        {
+            //            // set the input field to nothing
+            //            InputField.text = "";
+            //            StartCoroutine(CaretToPosition(InputField, CommandHistory.ElementAt((int)_currentLogHistoryIndex).Length));
+            //            break;
+            //        }
+            //        else
+            //        {
+            //            _currentLogHistoryIndex--;
+            //            InputField.text = CommandHistory.ElementAt((int)_currentLogHistoryIndex);
+            //            // set the caret to the end of the element in the decremented index position
+            //            StartCoroutine(CaretToPosition(InputField, CommandHistory.ElementAt((int)_currentLogHistoryIndex).Length));
+            //            break;
+            //        }
+            //}
         }
 
         #endregion
