@@ -3,7 +3,7 @@
 
 **Why?** [Unity Technologies has become the EA of game engines](https://www.youtube.com/playlist?list=PLS9MbmO_ssyAyVCJrsdDfqvR8yLSpkf2T).
 
-*This repo will go into public archive forever.* Keep an eye on [Hyperium Labs]([url](https://github.com/Hyperium-Labs)) for a Godot version.
+*This repo will go into public archive forever.* Keep an eye on [Hyperium Labs](https://github.com/Hyperium-Labs) for a Godot version.
 
 ---
 
