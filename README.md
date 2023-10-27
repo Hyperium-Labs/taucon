@@ -1,5 +1,5 @@
 # STOP! You should use Godot instead!
-[https://godotengine.org/]([url](https://godotengine.org/))
+[https://godotengine.org/](https://godotengine.org/)
 
 **Why?** [Unity Technologies has become the EA of game engines]([url](https://www.youtube.com/playlist?list=PLS9MbmO_ssyAyVCJrsdDfqvR8yLSpkf2T)).
 
