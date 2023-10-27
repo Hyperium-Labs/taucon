@@ -1,10 +1,17 @@
+# STOP! You should use Godot instead!
+[https://godotengine.org/]([url](https://godotengine.org/))
+
+**Why?** [Unity Technologies has become the EA of game engines]([url](https://www.youtube.com/playlist?list=PLS9MbmO_ssyAyVCJrsdDfqvR8yLSpkf2T)).
+
+*This repo will go into public archive forever.* Keep an eye on [Hyperium Labs]([url](https://github.com/Hyperium-Labs)) for a Godot version.
+
+---
+
 <p align="center">
   <img width="auto" height="auto" src="Assets/Logos/TauCon_Thumbnail.png">
 </p>
 
-<p align="center">
-  <img width="auto" height="auto" src="Assets/Logos/TauCon_Icon.png">
-</p>
+
 
 ## Features:
 
@@ -60,4 +67,8 @@
 5. Have fun! If you find a bug or have a cleaner way of doing something hit me up or submit a PR (Please keep in mind this was my first major completed project with C#/Unity, be nice 😅)
 
 ---
+
+<p align="center">
+  <img width="auto" height="auto" src="Assets/Logos/TauCon_Icon.png">
+</p>
 
