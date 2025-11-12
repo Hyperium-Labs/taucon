@@ -1,4 +1,4 @@
-Unity has recently dropped their runtime fee and walked back other changes; https://unity.com/blog/unity-is-canceling-the-runtime-fee
+I no longer use Unity due to their runtime fee nonsense. Unity has recently dropped their runtime fee and walked back other changes however if you are interested; https://unity.com/blog/unity-is-canceling-the-runtime-fee
 
 Personally, I don't see myself using Unity again. Godot is an amazing open-source alternative however: https://godotengine.org/
 
